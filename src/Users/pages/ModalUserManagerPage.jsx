@@ -20,11 +20,32 @@ const ModalUserManagerPage = (props) => {
         } */
     };
 
+    const getUsers = async () => {
+        const data = await fetch( 'http://localhost:3000/user/');
+        return data
+    }
+
+    const getUserById = async (id) => {
+        const data = await fetch( 'localhost:3000/api/user/', id);
+        return data
+    }
+
+    const updateUser = async (id, body) => {
+        const data = await fetch( 'localhost:3000/api/user/', id, body);
+        return data
+    }
+
+    const createUser = async (id, body) => {
+        const data = await fetch( 'localhost:3000/api/user/', id, body);
+        return data
+    }
+
     return (
         <ModalUserManagerUI
             selectedUser={selectedUser}
             handleDialogClose={handleDialogClose}
             handleSubmitForm={handleSubmit}
+            createUser={createUser}
         />
     )
 }
