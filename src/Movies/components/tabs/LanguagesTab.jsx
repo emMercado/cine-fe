@@ -3,9 +3,18 @@ import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
+import { Button } from "@material-ui/core";
+import { ModalLanguagesFormUI } from "../modals/ModalLanguagesFormUI";
 
 export const LanguagesTab = (props) => {
-  const { tabSelected, languages } = props;
+  const {
+    open,
+    tabSelected,
+    languages,
+    handleOpenModal,
+    onClose,
+    handleModalClose,
+  } = props;
   const col = [
     { title: "Title", field: "title" },
     /* { title: "username", field: "username" },
@@ -13,6 +22,18 @@ export const LanguagesTab = (props) => {
   ];
   return (
     <TabPanel value={tabSelected} index={3} id="user-info">
+      <Button
+        variant="contained"
+        disableElevation
+        style={{
+          marginRight: 10,
+          backgroundColor: "#70a954",
+          color: "#fff",
+        }}
+        onClick={() => handleOpenModal()}
+      >
+        Nueva Pelicula
+      </Button>
       <MaterialTable
         title={"Languages"}
         columns={col}
@@ -42,9 +63,15 @@ export const LanguagesTab = (props) => {
           {
             icon: Delete,
             tooltip: "Delete language",
-            onClick: (event, rowData) => alert("Delete language " + rowData.name),
+            onClick: (event, rowData) =>
+              alert("Delete language " + rowData.name),
           },
         ]}
+      />
+      <ModalLanguagesFormUI
+        open={open}
+        onClose={onClose}
+        handleModalClose={handleModalClose}
       />
     </TabPanel>
   );

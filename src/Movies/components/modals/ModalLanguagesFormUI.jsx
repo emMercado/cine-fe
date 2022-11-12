@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ModalMovieManagerUI = (props) => {
+export const ModalLanguagesFormUI = (props) => {
   const classes = useStyles();
   const { open, onClose, selectedValue, selectedMovie, handleModalClose } =
     props;

@@ -4,7 +4,8 @@ import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
-import { ModalMovieManagerUI } from "../modals/ModalMovieManagerUI";
+import { ModalMovieFormUI } from "../modals/ModalMovieFormUI";
+
 
 export const MoviesTab = (props) => {
   const {
@@ -32,7 +33,7 @@ export const MoviesTab = (props) => {
         }}
         onClick={() => handleOpenModal()}
       >
-        New Movie
+        Nueva Pelicula
       </Button>
       <MaterialTable
         title={"Movies"}
@@ -67,7 +68,7 @@ export const MoviesTab = (props) => {
           },
         ]}
       />
-      <ModalMovieManagerUI
+      <ModalMovieFormUI
         open={open}
         onClose={onClose}
         handleModalClose={handleModalClose}

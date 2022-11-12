@@ -3,9 +3,18 @@ import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
+import { Button } from "@material-ui/core";
+import { ModalProtagonistsFormUI } from "../modals/ModalProtagonistsFormUI";
 
 export const ProtagonistsTab = (props) => {
-  const { tabSelected, protagonists } = props;
+  const {
+    tabSelected,
+    protagonists,
+    handleOpenModal,
+    open,
+    onClose,
+    handleModalClose,
+  } = props;
   const col = [
     { title: "Title", field: "title" },
     /* { title: "username", field: "username" },
@@ -13,6 +22,18 @@ export const ProtagonistsTab = (props) => {
   ];
   return (
     <TabPanel value={tabSelected} index={2} id="user-info">
+      <Button
+        variant="contained"
+        disableElevation
+        style={{
+          marginRight: 10,
+          backgroundColor: "#70a954",
+          color: "#fff",
+        }}
+        onClick={() => handleOpenModal()}
+      >
+        Nueva Pelicula
+      </Button>
       <MaterialTable
         title={"Protagonists"}
         columns={col}
@@ -46,6 +67,11 @@ export const ProtagonistsTab = (props) => {
               alert("Delete protagonist " + rowData.name),
           },
         ]}
+      />
+      <ModalProtagonistsFormUI
+        open={open}
+        onClose={onClose}
+        handleModalClose={handleModalClose}
       />
     </TabPanel>
   );

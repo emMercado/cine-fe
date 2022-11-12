@@ -14,7 +14,19 @@ const MoviesManagerUI = (props) => {
   const [selectedValue, setSelectedValue] = useState({});
   const [tabSelected, setTabSelected] = useState(0);
   const [titleState, setTitleState] = useState("");
-  const [movies, setMovies] = useState([
+  const [moviesAvilable, setMoviesAvilable] = useState([
+    { username: "z124257", title: "Saw I", role: "admin" },
+    { username: "z123456", title: "Saw II", role: "gerent" },
+  ]);
+  const [genresAvilable, setGenresAvilable] = useState([
+    { username: "z124257", title: "Saw I", role: "admin" },
+    { username: "z123456", title: "Saw II", role: "gerent" },
+  ]);
+  const [languagesAvilable, setLanguagesAvilable] = useState([
+    { username: "z124257", title: "Saw I", role: "admin" },
+    { username: "z123456", title: "Saw II", role: "gerent" },
+  ]);
+  const [protagonistsAvilable, setProtagonistsAvilable] = useState([
     { username: "z124257", title: "Saw I", role: "admin" },
     { username: "z123456", title: "Saw II", role: "gerent" },
   ]);
@@ -88,15 +100,39 @@ const MoviesManagerUI = (props) => {
           {
             <MoviesTab
               tabSelected={tabSelected}
-              movies={movies}
+              movies={moviesAvilable}
               handleOpenModal={handleOpenModal}
               open={openModal}
               onClose={handleCloseModal}
             />
           }
-          {<GenresTab tabSelected={tabSelected} />}
-          {<ProtagonistsTab tabSelected={tabSelected} />}
-          {<LanguagesTab tabSelected={tabSelected} />}
+          {
+            <GenresTab
+              tabSelected={tabSelected}
+              genres={genresAvilable}
+              handleOpenModal={handleOpenModal}
+              open={openModal}
+              onClose={handleCloseModal}
+            />
+          }
+          {
+            <ProtagonistsTab
+              tabSelected={tabSelected}
+              protagonists={protagonistsAvilable}
+              handleOpenModal={handleOpenModal}
+              open={openModal}
+              onClose={handleCloseModal}
+            />
+          }
+          {
+            <LanguagesTab
+              tabSelected={tabSelected}
+              languages={languagesAvilable}
+              handleOpenModal={handleOpenModal}
+              open={openModal}
+              onClose={handleCloseModal}
+            />
+          }
 
           {/* 
           <MaterialTable

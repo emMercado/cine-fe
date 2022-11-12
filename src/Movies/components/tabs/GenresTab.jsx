@@ -3,18 +3,38 @@ import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
+import { Button } from "@material-ui/core";
+import { ModalGenreFormUI } from "../modals/ModalGenreFormUI";
+import { GenreManagerPage } from "../../pages/GenreManagerPage";
 
 export const GenresTab = (props) => {
-  const { tabSelected, genres } = props;
-  const col = [
-    { title: "Title", field: "title" },
-    /* { title: "username", field: "username" },
-    { title: "Role", field: "role" }, */
-  ];
+  const {
+    open,
+    onClose,
+    selectedValue,
+    selectedMovie,
+    handleModalClose,
+    tabSelected,
+    genres,
+    handleOpenModal,
+  } = props;
+  const col = [{ title: "Title", field: "title" }];
   return (
     <TabPanel value={tabSelected} index={1} id="user-info">
+      <Button
+        variant="contained"
+        disableElevation
+        style={{
+          marginRight: 10,
+          backgroundColor: "#70a954",
+          color: "#fff",
+        }}
+        onClick={() => handleOpenModal()}
+      >
+        Nuevo genero
+      </Button>
       <MaterialTable
-        title={"Genres"}
+        title={"Generos"}
         columns={col}
         data={genres}
         options={{
@@ -45,6 +65,11 @@ export const GenresTab = (props) => {
             onClick: (event, rowData) => alert("Delete genre " + rowData.name),
           },
         ]}
+      />
+      <GenreManagerPage
+        open={open}
+        onClose={onClose}
+        handleModalClose={handleModalClose}
       />
     </TabPanel>
   );
