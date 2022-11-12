@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const RoomManagerUI = () => {
+const RoomManagerUI = () => {
   return (
     <div>RoomManagerUI
 
@@ -8,3 +8,6 @@ export const RoomManagerUI = () => {
     </div>
   )
 }
+
+
+export default RoomManagerUI

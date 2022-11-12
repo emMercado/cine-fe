@@ -1,7 +1,8 @@
-import React from 'react'
+import React from "react";
+import RoomManagerUI from "../components/RoomManagerUI";
 
-export const RoomManagerPage = () => {
-  return (
-    <div>RoomManagerPage</div>
-  )
-}
+const RoomManagerPage = () => {
+  return <RoomManagerUI />;
+};
+
+export default RoomManagerPage;
