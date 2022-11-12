@@ -4,7 +4,6 @@ import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
-import { ModalLanguagesFormUI } from "../modals/ModalLanguagesFormUI";
 
 export const LanguagesTab = (props) => {
   const {
@@ -67,11 +66,6 @@ export const LanguagesTab = (props) => {
               alert("Delete language " + rowData.name),
           },
         ]}
-      />
-      <ModalLanguagesFormUI
-        open={open}
-        onClose={onClose}
-        handleModalClose={handleModalClose}
       />
     </TabPanel>
   );

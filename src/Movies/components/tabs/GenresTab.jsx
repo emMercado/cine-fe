@@ -1,35 +1,49 @@
-import React, { useEffect, useState } from "react";
-import MaterialTable from "@material-table/core";
+import React, { useEffect, useRef, useState } from "react";
+import MaterialTable, {
+  MTableAction,
+  MTableToolbar,
+} from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
-import { Button } from "@material-ui/core";
-import { ModalGenreFormUI } from "../modals/ModalGenreFormUI";
+import { Button, Paper } from "@material-ui/core";
+import { tableIcons } from "../../../Shared/components/tableIcons";
 
 export const GenresTab = (props) => {
   const {
-    open,
-    onClose,
-    selectedValue,
-    selectedMovie,
-    handleModalClose,
     tabSelected,
-    genres,
-    handleOpenModal,
     handleGetGenres,
+    handlePostGenre,
+    handleUpdateGenre,
+    handleDeleteGenre,
   } = props;
-  const col = [{ title: "Title", field: "name" }];
-
   const [genresAvilable, setGenresAvilable] = useState([]);
+
+  const col = [{ title: "Title", field: "name" }];
 
   useEffect(() => {
     populate();
   }, []);
 
   const populate = async () => {
-    const {data} = await handleGetGenres();
+    const { data } = await handleGetGenres();
     setGenresAvilable(data);
   };
+
+  const handleSubmit = async (body) => {
+    try {
+      if (body._id) {
+        await handleUpdateGenre(body, body._id);
+        populate();
+        return;
+      }
+      return await handlePostGenre(body);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addActionRef = useRef();
 
   return (
     <TabPanel value={tabSelected} index={1} id="user-info">
@@ -41,7 +55,7 @@ export const GenresTab = (props) => {
           backgroundColor: "#70a954",
           color: "#fff",
         }}
-        onClick={() => handleOpenModal()}
+        onClick={() => addActionRef.current.click()}
       >
         Nuevo genero
       </Button>
@@ -49,6 +63,7 @@ export const GenresTab = (props) => {
         title={"Generos"}
         columns={col}
         data={genresAvilable}
+        icons={tableIcons}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -61,27 +76,50 @@ export const GenresTab = (props) => {
           showTitle: true,
           search: true,
           showEmptyDataSourceMessage: false,
+          addRowPosition: "first",
+          actionColumnIndex: -1,
         }}
-        actions={[
-          {
-            icon: Edit,
-            //disabled: !fullAccess,
-            tooltip: "Edit genre",
-            onClick: (event, rowData) => {
-              //  handleClickEditGroup(rowData);
-            },
+        editable={{
+          /* isEditable: (rowData) => rowData, */
+          onRowAdd: (newData) =>
+            new Promise((resolve) => {
+              resolve();
+              setGenresAvilable([...genresAvilable, newData]);
+              handleSubmit(newData);
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve) => {
+              resolve();
+              handleSubmit(newData);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise(async (resolve) => {
+              const genre = await handleDeleteGenre(oldData._id);
+              if (genre) {
+                populate();
+              }
+              resolve();
+            }),
+        }}
+        components={{
+          Container: (props) => (
+            <Paper {...props} variant="outlined" elevation={1} />
+          ),
+          Toolbar: (props) => (
+            <div style={{ height: "0px" }}>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+          Action: (props) => {
+            if (
+              typeof props.action === typeof Function ||
+              props.action.tooltip !== "Add"
+            ) {
+              return <MTableAction {...props} />;
+            }
+            return <div ref={addActionRef} onClick={props.action.onClick} />;
           },
-          {
-            icon: Delete,
-            tooltip: "Delete genre",
-            onClick: (event, rowData) => alert("Delete genre " + rowData.name),
-          },
-        ]}
-      />
-      <ModalGenreFormUI
-        open={open}
-        onClose={onClose}
-        handleModalClose={handleModalClose}
+        }}
       />
     </TabPanel>
   );

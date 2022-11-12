@@ -4,16 +4,12 @@ import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
-import { ModalProtagonistsFormUI } from "../modals/ModalProtagonistsFormUI";
 
 export const ProtagonistsTab = (props) => {
   const {
     tabSelected,
     protagonists,
     handleOpenModal,
-    open,
-    onClose,
-    handleModalClose,
   } = props;
   const col = [
     { title: "Title", field: "title" },
@@ -67,11 +63,6 @@ export const ProtagonistsTab = (props) => {
               alert("Delete protagonist " + rowData.name),
           },
         ]}
-      />
-      <ModalProtagonistsFormUI
-        open={open}
-        onClose={onClose}
-        handleModalClose={handleModalClose}
       />
     </TabPanel>
   );
