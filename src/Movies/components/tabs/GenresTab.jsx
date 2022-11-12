@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
 import { ModalGenreFormUI } from "../modals/ModalGenreFormUI";
-import { GenreManagerPage } from "../../pages/GenreManagerPage";
 
 export const GenresTab = (props) => {
   const {
@@ -17,8 +16,21 @@ export const GenresTab = (props) => {
     tabSelected,
     genres,
     handleOpenModal,
+    handleGetGenres,
   } = props;
-  const col = [{ title: "Title", field: "title" }];
+  const col = [{ title: "Title", field: "name" }];
+
+  const [genresAvilable, setGenresAvilable] = useState([]);
+
+  useEffect(() => {
+    populate();
+  }, []);
+
+  const populate = async () => {
+    const {data} = await handleGetGenres();
+    setGenresAvilable(data);
+  };
+
   return (
     <TabPanel value={tabSelected} index={1} id="user-info">
       <Button
@@ -36,7 +48,7 @@ export const GenresTab = (props) => {
       <MaterialTable
         title={"Generos"}
         columns={col}
-        data={genres}
+        data={genresAvilable}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -66,7 +78,7 @@ export const GenresTab = (props) => {
           },
         ]}
       />
-      <GenreManagerPage
+      <ModalGenreFormUI
         open={open}
         onClose={onClose}
         handleModalClose={handleModalClose}

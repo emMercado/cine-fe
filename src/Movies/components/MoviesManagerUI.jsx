@@ -5,6 +5,7 @@ import { GenresTab } from "./tabs/GenresTab";
 import { ProtagonistsTab } from "./tabs/ProtagonistsTab";
 import { MoviesTab } from "./tabs/MoviesTab";
 import { LanguagesTab } from "./tabs/LanguagesTab";
+import { GenreManagerPage } from "../pages/GenreManagerPage";
 /* import styles from '../styles/ModalUserManagerStyles'; */
 
 const MoviesManagerUI = (props) => {
@@ -107,7 +108,7 @@ const MoviesManagerUI = (props) => {
             />
           }
           {
-            <GenresTab
+            <GenreManagerPage
               tabSelected={tabSelected}
               genres={genresAvilable}
               handleOpenModal={handleOpenModal}
@@ -115,6 +116,15 @@ const MoviesManagerUI = (props) => {
               onClose={handleCloseModal}
             />
           }
+          {/* {
+            <GenresTab
+              tabSelected={tabSelected}
+              genres={genresAvilable}
+              handleOpenModal={handleOpenModal}
+              open={openModal}
+              onClose={handleCloseModal}
+            />
+          } */}
           {
             <ProtagonistsTab
               tabSelected={tabSelected}
