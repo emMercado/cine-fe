@@ -27,7 +27,7 @@ const HomeUI = (props) => {
       11: "K",
       12: "L",
       13: "M",
-      14: "N",
+      14: "N", 
     };
     for (let i = 1; i < 15; i++) {
       for (let j = 1; j <= 16; j++) {
