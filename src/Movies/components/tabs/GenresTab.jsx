@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import MaterialTable, {
   MTableAction,
   MTableToolbar,
 } from "@material-table/core";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button, Paper } from "@material-ui/core";
 import { tableIcons } from "../../../Shared/components/tableIcons";
@@ -12,23 +10,15 @@ import { tableIcons } from "../../../Shared/components/tableIcons";
 export const GenresTab = (props) => {
   const {
     tabSelected,
-    handleGetGenres,
-    handlePostGenre,
+    handleCreateGenre,
     handleUpdateGenre,
     handleDeleteGenre,
+    genresAvilable,
+    setGenresAvilable,
+    populate,
   } = props;
-  const [genresAvilable, setGenresAvilable] = useState([]);
 
-  const col = [{ title: "Title", field: "name" }];
-
-  useEffect(() => {
-    populate();
-  }, []);
-
-  const populate = async () => {
-    const { data } = await handleGetGenres();
-    setGenresAvilable(data);
-  };
+  const col = [{ title: "Generos", field: "name" }];
 
   const handleSubmit = async (body) => {
     try {
@@ -37,7 +27,7 @@ export const GenresTab = (props) => {
         populate();
         return;
       }
-      return await handlePostGenre(body);
+      return await handleCreateGenre(body);
     } catch (error) {
       console.error(error);
     }

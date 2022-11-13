@@ -22,8 +22,15 @@ const useStyles = makeStyles((theme) => ({
 
 export const ModalMovieFormUI = (props) => {
   const classes = useStyles();
-  const { open, onClose, selectedValue, selectedMovie, handleModalClose } =
-    props;
+  const {
+    open,
+    onClose,
+    selectedValue,
+    selectedMovie,
+    genresAvilable,
+    protagonistsAvilable,
+    languagesAvilable,
+  } = props;
 
   const {
     id = undefined,

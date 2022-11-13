@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Tab, Tabs } from "@material-ui/core";
-import { ProtagonistsTab } from "./tabs/ProtagonistsTab";
 import { MoviesTab } from "./tabs/MoviesTab";
-import { LanguagesTab } from "./tabs/LanguagesTab";
 import { GenreManagerPage } from "../pages/GenreManagerPage";
 import { ProtagonistManagerPage } from "../pages/ProtagonistManagerPage";
 import { LanguageManagerPage } from "../pages/LanguageManagerPage";
 /* import styles from '../styles/ModalUserManagerStyles'; */
 
 const MoviesManagerUI = (props) => {
-  /* const { getMovies } = props; */
+  const { handleGetProtagonists, handleGetLanguages, handleGetGenres } = props;
   /* const classes = styles(); */
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState({});
   const [tabSelected, setTabSelected] = useState(0);
+
+  const [genresAvilable, setGenresAvilable] = useState([]);
+  const [languagesAvilable, setLanguagesAvilable] = useState([]);
+  const [protagonistsAvilable, setProtagonistsAvilable] = useState([]);
+
+  const populateProtagonists = async () => {
+    const { data } = await handleGetProtagonists();
+    setProtagonistsAvilable(data);
+  };
+
+  const populateGenres = async () => {
+    const { data } = await handleGetGenres();
+    setGenresAvilable(data);
+  };
+
+  const populateLaguages = async () => {
+    const { data } = await handleGetLanguages();
+    setLanguagesAvilable(data);
+  };
+
+  useEffect(() => {
+    populateProtagonists();
+    populateGenres();
+    populateLaguages();
+  }, []);
 
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
@@ -86,27 +109,30 @@ const MoviesManagerUI = (props) => {
             handleOpenModal={handleOpenModal}
             open={openModal}
             onClose={handleCloseModal}
+            genresAvilable={genresAvilable}
+            protagonistsAvilable={protagonistsAvilable}
+            languagesAvilable={languagesAvilable}
           />
 
           <GenreManagerPage
             tabSelected={tabSelected}
-            handleOpenModal={handleOpenModal}
-            open={openModal}
-            onClose={handleCloseModal}
+            genresAvilable={genresAvilable}
+            setGenresAvilable={setGenresAvilable}
+            populate={populateGenres}
           />
 
           <ProtagonistManagerPage
             tabSelected={tabSelected}
-            handleOpenModal={handleOpenModal}
-            open={openModal}
-            onClose={handleCloseModal}
+            protagonistsAvilable={protagonistsAvilable}
+            setProtagonistsAvilable={setProtagonistsAvilable}
+            populate={populateProtagonists}
           />
 
           <LanguageManagerPage
             tabSelected={tabSelected}
-            handleOpenModal={handleOpenModal}
-            open={openModal}
-            onClose={handleCloseModal}
+            languagesAvilable={languagesAvilable}
+            setLanguagesAvilable={setLanguagesAvilable}
+            populate={populateLaguages}
           />
         </Grid>
       </Grid>

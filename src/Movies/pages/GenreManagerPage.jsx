@@ -3,14 +3,9 @@ import axios from "axios";
 import { GenresTab } from "../components/tabs/GenresTab";
 
 export const GenreManagerPage = (props) => {
-  const { tabSelected, handleOpenModal, open, onClose } = props;
+  const { tabSelected, genresAvilable, setGenresAvilable, populate } = props;
 
-  const handleGetGenres = async () => {
-    const { data } = await axios.get(`http://localhost:3001/api/genre`);
-    return data;
-  };
-
-  const handlePostGenre = async (body) => {
+  const handleCreateGenre = async (body) => {
     const data = await axios.post(
       `http://localhost:3001/api/genre/registerGenre`,
       body
@@ -31,11 +26,10 @@ export const GenreManagerPage = (props) => {
   return (
     <GenresTab
       tabSelected={tabSelected}
-      handleOpenModal={handleOpenModal}
-      open={open}
-      onClose={onClose}
-      handleGetGenres={handleGetGenres}
-      handlePostGenre={handlePostGenre}
+      genresAvilable={genresAvilable}
+      setGenresAvilable={setGenresAvilable}
+      populate={populate}
+      handleCreateGenre={handleCreateGenre}
       handleUpdateGenre={handleUpdateGenre}
       handleDeleteGenre={handleDeleteGenre}
     />
