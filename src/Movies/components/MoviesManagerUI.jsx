@@ -7,7 +7,15 @@ import { LanguageManagerPage } from "../pages/LanguageManagerPage";
 /* import styles from '../styles/ModalUserManagerStyles'; */
 
 const MoviesManagerUI = (props) => {
-  const { handleGetProtagonists, handleGetLanguages, handleGetGenres } = props;
+  const {
+    handleGetProtagonists,
+    handleGetLanguages,
+    handleGetGenres,
+    handleGetMovies,
+    handleCreateMovie,
+    handleUpdateMovie,
+    handleDeleteMovie,
+  } = props;
   /* const classes = styles(); */
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState({});
@@ -16,6 +24,7 @@ const MoviesManagerUI = (props) => {
   const [genresAvilable, setGenresAvilable] = useState([]);
   const [languagesAvilable, setLanguagesAvilable] = useState([]);
   const [protagonistsAvilable, setProtagonistsAvilable] = useState([]);
+  const [moviesAvilable, setMoviesAvilable] = useState([]);
 
   const populateProtagonists = async () => {
     const { data } = await handleGetProtagonists();
@@ -32,10 +41,16 @@ const MoviesManagerUI = (props) => {
     setLanguagesAvilable(data);
   };
 
+  const populateMovies = async () => {
+    const { data } = await handleGetMovies();
+    setMoviesAvilable(data);
+  };
+
   useEffect(() => {
     populateProtagonists();
     populateGenres();
     populateLaguages();
+    populateMovies();
   }, []);
 
   const handleOpenModal = (rowData) => {
@@ -112,6 +127,12 @@ const MoviesManagerUI = (props) => {
             genresAvilable={genresAvilable}
             protagonistsAvilable={protagonistsAvilable}
             languagesAvilable={languagesAvilable}
+            setMoviesAvilable={setMoviesAvilable}
+            moviesAvilable={moviesAvilable}
+            populate={populateMovies}
+            handleCreateMovie={handleCreateMovie}
+            handleUpdateMovie={handleUpdateMovie}
+            handleDeleteMovie={handleDeleteMovie}
           />
 
           <GenreManagerPage

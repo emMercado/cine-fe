@@ -18,6 +18,11 @@ export const MoviesTab = (props) => {
     genresAvilable,
     protagonistsAvilable,
     languagesAvilable,
+    handleCreateMovie,
+    handleUpdateMovie,
+    handleDeleteMovie,
+    moviesAvilable,
+    setMoviesAvilable,
   } = props;
   const col = [
     { title: "Title", field: "title" },
@@ -42,7 +47,7 @@ export const MoviesTab = (props) => {
         title={"Movies"}
         icons={tableIcons}
         columns={col}
-        data={movies}
+        data={moviesAvilable}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -79,6 +84,9 @@ export const MoviesTab = (props) => {
         genresAvilable={genresAvilable}
         protagonistsAvilable={protagonistsAvilable}
         languagesAvilable={languagesAvilable}
+        handleCreateMovie={handleCreateMovie}
+        handleUpdateMovie={handleUpdateMovie}
+        handleDeleteMovie={handleDeleteMovie}
       />
     </TabPanel>
   );
