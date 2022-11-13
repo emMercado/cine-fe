@@ -1,23 +1,57 @@
-import MaterialTable from "@material-table/core";
-import { Button, Grid, Tab, Tabs } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { GenresTab } from "./tabs/GenresTab";
-import { ProtagonistsTab } from "./tabs/ProtagonistsTab";
+import { Grid, Tab, Tabs } from "@material-ui/core";
 import { MoviesTab } from "./tabs/MoviesTab";
-import { LanguagesTab } from "./tabs/LanguagesTab";
+import { GenreManagerPage } from "../pages/GenreManagerPage";
+import { ProtagonistManagerPage } from "../pages/ProtagonistManagerPage";
+import { LanguageManagerPage } from "../pages/LanguageManagerPage";
 /* import styles from '../styles/ModalUserManagerStyles'; */
 
 const MoviesManagerUI = (props) => {
-  /* const { getMovies } = props; */
+  const {
+    handleGetProtagonists,
+    handleGetLanguages,
+    handleGetGenres,
+    handleGetMovies,
+    handleCreateMovie,
+    handleUpdateMovie,
+    handleDeleteMovie,
+  } = props;
   /* const classes = styles(); */
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState({});
   const [tabSelected, setTabSelected] = useState(0);
-  const [titleState, setTitleState] = useState("");
-  const [movies, setMovies] = useState([
-    { username: "z124257", title: "Saw I", role: "admin" },
-    { username: "z123456", title: "Saw II", role: "gerent" },
-  ]);
+
+  const [genresAvilable, setGenresAvilable] = useState([]);
+  const [languagesAvilable, setLanguagesAvilable] = useState([]);
+  const [protagonistsAvilable, setProtagonistsAvilable] = useState([]);
+  const [moviesAvilable, setMoviesAvilable] = useState([]);
+
+  const populateProtagonists = async () => {
+    const { data } = await handleGetProtagonists();
+    setProtagonistsAvilable(data);
+  };
+
+  const populateGenres = async () => {
+    const { data } = await handleGetGenres();
+    setGenresAvilable(data);
+  };
+
+  const populateLaguages = async () => {
+    const { data } = await handleGetLanguages();
+    setLanguagesAvilable(data);
+  };
+
+  const populateMovies = async () => {
+    const { data } = await handleGetMovies();
+    setMoviesAvilable(data);
+  };
+
+  useEffect(() => {
+    populateProtagonists();
+    populateGenres();
+    populateLaguages();
+    populateMovies();
+  }, []);
 
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
@@ -85,55 +119,42 @@ const MoviesManagerUI = (props) => {
           </Tabs>
         </Grid>
         <Grid item xs={12} sm={8}>
-          {
-            <MoviesTab
-              tabSelected={tabSelected}
-              movies={movies}
-              handleOpenModal={handleOpenModal}
-              open={openModal}
-              onClose={handleCloseModal}
-            />
-          }
-          {<GenresTab tabSelected={tabSelected} />}
-          {<ProtagonistsTab tabSelected={tabSelected} />}
-          {<LanguagesTab tabSelected={tabSelected} />}
-
-          {/* 
-          <MaterialTable
-            title={titleState}
-            columns={col}
-            data={movies}
-            options={{
-              actionsColumnIndex: -1,
-              emptyRowsWhenPaging: false,
-              headerStyle: { fontSize: 15 },
-              rowStyle: { fontSize: 15 },
-              sorting: true,
-              thirdSortClick: false,
-              paginationType: "stepper",
-              pageSizeOptions: [10, 25, 50, 100, 250, 500],
-              showTitle: true,
-              search: true,
-              showEmptyDataSourceMessage: false,
-            }}
-            actions={[
-              {
-                icon: Edit,
-                //disabled: !fullAccess,
-                tooltip: "Editar usuario",
-                onClick: (event, rowData) => {
-                  //  handleClickEditGroup(rowData); 
-                },
-              },
-              {
-                icon: Delete,
-                tooltip: "Eliminar usuario",
-                onClick: (event, rowData) =>
-                  alert("Eliminar usuario " + rowData.name),
-              },
-            ]}
+          <MoviesTab
+            tabSelected={tabSelected}
+            handleOpenModal={handleOpenModal}
+            open={openModal}
+            onClose={handleCloseModal}
+            genresAvilable={genresAvilable}
+            protagonistsAvilable={protagonistsAvilable}
+            languagesAvilable={languagesAvilable}
+            setMoviesAvilable={setMoviesAvilable}
+            moviesAvilable={moviesAvilable}
+            populate={populateMovies}
+            handleCreateMovie={handleCreateMovie}
+            handleUpdateMovie={handleUpdateMovie}
+            handleDeleteMovie={handleDeleteMovie}
           />
-           */}
+
+          <GenreManagerPage
+            tabSelected={tabSelected}
+            genresAvilable={genresAvilable}
+            setGenresAvilable={setGenresAvilable}
+            populate={populateGenres}
+          />
+
+          <ProtagonistManagerPage
+            tabSelected={tabSelected}
+            protagonistsAvilable={protagonistsAvilable}
+            setProtagonistsAvilable={setProtagonistsAvilable}
+            populate={populateProtagonists}
+          />
+
+          <LanguageManagerPage
+            tabSelected={tabSelected}
+            languagesAvilable={languagesAvilable}
+            setLanguagesAvilable={setLanguagesAvilable}
+            populate={populateLaguages}
+          />
         </Grid>
       </Grid>
     </>
