@@ -1,25 +1,40 @@
-import React from "react";
-import MaterialTable from "@material-table/core";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
+import React, { useRef } from "react";
+import MaterialTable, {
+  MTableAction,
+  MTableToolbar,
+} from "@material-table/core";
 import TabPanel from "../../../Shared/components/TabPanel";
-import { Button } from "@material-ui/core";
-import { ModalProtagonistsFormUI } from "../modals/ModalProtagonistsFormUI";
+import { Button, Paper } from "@material-ui/core";
+import { tableIcons } from "../../../Shared/components/tableIcons";
 
 export const ProtagonistsTab = (props) => {
   const {
     tabSelected,
-    protagonists,
-    handleOpenModal,
-    open,
-    onClose,
-    handleModalClose,
+    protagonistsAvilable,
+    setProtagonistsAvilable,
+    populate,
+    handleCreateProtagonist,
+    handleUpdateProtagonist,
+    handleDeleteProtagonist,
   } = props;
-  const col = [
-    { title: "Title", field: "title" },
-    /* { title: "username", field: "username" },
-    { title: "Role", field: "role" }, */
-  ];
+
+  const col = [{ title: "Protagonistas", field: "name" }];
+
+  const handleSubmit = async (body) => {
+    try {
+      if (body._id) {
+        await handleUpdateProtagonist(body, body._id);
+        populate();
+        return;
+      }
+      return await handleCreateProtagonist(body);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addActionRef = useRef();
+
   return (
     <TabPanel value={tabSelected} index={2} id="user-info">
       <Button
@@ -30,14 +45,15 @@ export const ProtagonistsTab = (props) => {
           backgroundColor: "#70a954",
           color: "#fff",
         }}
-        onClick={() => handleOpenModal()}
+        onClick={() => addActionRef.current.click()}
       >
-        Nueva Pelicula
+        Nuevo genero
       </Button>
       <MaterialTable
-        title={"Protagonists"}
+        title={"Protagonistas"}
         columns={col}
-        data={protagonists}
+        data={protagonistsAvilable}
+        icons={tableIcons}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -46,32 +62,54 @@ export const ProtagonistsTab = (props) => {
           sorting: true,
           thirdSortClick: false,
           paginationType: "stepper",
-          pageSizeOptions: [10, 25, 50, 100, 250, 500],
+          pageSizeOptions: [10, 25],
           showTitle: true,
           search: true,
           showEmptyDataSourceMessage: false,
+          addRowPosition: "first",
+          actionColumnIndex: -1,
         }}
-        actions={[
-          {
-            icon: Edit,
-            //disabled: !fullAccess,
-            tooltip: "Edit protagonist",
-            onClick: (event, rowData) => {
-              //  handleClickEditGroup(rowData);
-            },
+        editable={{
+          /* isEditable: (rowData) => rowData, */
+          onRowAdd: (newData) =>
+            new Promise((resolve) => {
+              resolve();
+              setProtagonistsAvilable([...protagonistsAvilable, newData]);
+              handleSubmit(newData);
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve) => {
+              resolve();
+              handleSubmit(newData);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise(async (resolve) => {
+              const protagonist = await handleDeleteProtagonist(oldData._id);
+              if (protagonist) {
+                populate();
+              }
+              resolve();
+            }),
+        }}
+        components={{
+          Container: (props) => (
+            <Paper {...props} variant="outlined" elevation={1} />
+          ),
+          Toolbar: (props) => (
+            <div style={{ height: "0px" }}>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+          Action: (props) => {
+            if (
+              typeof props.action === typeof Function ||
+              props.action.tooltip !== "Add"
+            ) {
+              return <MTableAction {...props} />;
+            }
+            return <div ref={addActionRef} onClick={props.action.onClick} />;
           },
-          {
-            icon: Delete,
-            tooltip: "Delete protagonist",
-            onClick: (event, rowData) =>
-              alert("Delete protagonist " + rowData.name),
-          },
-        ]}
-      />
-      <ModalProtagonistsFormUI
-        open={open}
-        onClose={onClose}
-        handleModalClose={handleModalClose}
+        }}
       />
     </TabPanel>
   );

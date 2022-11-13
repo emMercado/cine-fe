@@ -5,7 +5,7 @@ import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
 import { ModalMovieFormUI } from "../modals/ModalMovieFormUI";
-
+import { tableIcons } from "../../../Shared/components/tableIcons";
 
 export const MoviesTab = (props) => {
   const {
@@ -15,6 +15,14 @@ export const MoviesTab = (props) => {
     handleModalClose,
     open,
     onClose,
+    genresAvilable,
+    protagonistsAvilable,
+    languagesAvilable,
+    handleCreateMovie,
+    handleUpdateMovie,
+    handleDeleteMovie,
+    moviesAvilable,
+    setMoviesAvilable,
   } = props;
   const col = [
     { title: "Title", field: "title" },
@@ -37,8 +45,9 @@ export const MoviesTab = (props) => {
       </Button>
       <MaterialTable
         title={"Movies"}
+        icons={tableIcons}
         columns={col}
-        data={movies}
+        data={moviesAvilable}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -72,6 +81,12 @@ export const MoviesTab = (props) => {
         open={open}
         onClose={onClose}
         handleModalClose={handleModalClose}
+        genresAvilable={genresAvilable}
+        protagonistsAvilable={protagonistsAvilable}
+        languagesAvilable={languagesAvilable}
+        handleCreateMovie={handleCreateMovie}
+        handleUpdateMovie={handleUpdateMovie}
+        handleDeleteMovie={handleDeleteMovie}
       />
     </TabPanel>
   );
