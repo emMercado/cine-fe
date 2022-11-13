@@ -11,6 +11,7 @@ import {
   Input,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
 } from "@material-ui/core";
 import styles from "../styles/ModalUserManagerStyles";
@@ -37,7 +38,9 @@ const ModalUserManagerUI = (props) => {
 
   const handleSubmitForm = async (values) => {
     //probar si se necesita async await
+    console.log(values)
     await createUser(values);
+    
   }
 
   const {
@@ -48,7 +51,7 @@ const ModalUserManagerUI = (props) => {
     email = "",
     role = "",
   } = selectedUser || {};
-
+  // CARTEL MODAL -----------------------------------------------------------------------------------
   const Data = ({ formikProps }) => (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -72,7 +75,7 @@ const ModalUserManagerUI = (props) => {
           id="name"
           label={"Nombre completo"}
           formikProps={formikProps}
-          placeholder="Pepe Lopez"
+          placeholder="Nombre Completo"
           onChange={(e) => {
             formikProps.handleChange(e);
             /* setDirty(true); */
@@ -114,7 +117,7 @@ const ModalUserManagerUI = (props) => {
           id="email"
           label={"Email"}
           formikProps={formikProps}
-          placeholder="example@mail.com"
+          placeholder="Email"
           onChange={(e) => {
             formikProps.handleChange(e);
             /* setDirty(true); */
@@ -124,7 +127,7 @@ const ModalUserManagerUI = (props) => {
       <Grid item xs={12}>
         {/*TODO: SELECT CON ROLES */}
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+          <InputLabel id="demo-controlled-open-select-label">Tipo de Rol</InputLabel>
           <Select
             labelId="demo-controlled-open-select-label"
             id="demo-controlled-open-select"
@@ -142,6 +145,7 @@ const ModalUserManagerUI = (props) => {
             <MenuItem value={"EMPLOYEE"}>EMPLEADO</MenuItem>
           </Select>
         </FormControl>
+        
 
         {/* <Input
           type=select
@@ -161,14 +165,15 @@ const ModalUserManagerUI = (props) => {
   );
 
   return (
+    // LIBRERIA DE FORMULARIO ----------------------------------------------------------------------------
+    //FORMIK identifica todos los input con esos nombres
     <Formik
       enableReinitialize
       initialValues={{
-        id,
         username,
+        name,
         password: "",
         confirmPassword: "",
-        name,
         email,
         role,
       }}
@@ -203,7 +208,9 @@ const ModalUserManagerUI = (props) => {
           <DialogActions
             style={{ paddingTop: 5, paddingRight: 35, paddingBottom: 20 }}
           >
+            
             <Button
+            /* bOTONES DEL MODAL -----------------------------------------------------------------------*/
               className={classes.button}
               disableElevation
               variant="outlined"
@@ -217,8 +224,9 @@ const ModalUserManagerUI = (props) => {
               disableElevation
               variant="contained"
               color="primary"
-              onClick={()=> handleSubmitForm(formikProps.values) }
+              onClick={()=> handleSubmitForm(formikProps.values) && handleDialogClose()}
               /* disabled={loadingSubmit || !dirty} */
+              
             >
               {selectedUser ? `Guardar` : `Registrar usuario`}
               {loadingSubmit && (
@@ -226,7 +234,10 @@ const ModalUserManagerUI = (props) => {
                   size={24}
                   className={classes.buttonProgress}
                 />
+                
+                
               )}
+              
             </Button>
           </DialogActions>
         </>

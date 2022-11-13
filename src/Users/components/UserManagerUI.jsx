@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import MaterialTable from "@material-table/core";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Icon } from "@material-ui/core";
 import { ModalUserUI } from "./ModalUserUI";
 import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
-
+//BOTONES Y MUESTRA DE USUARIOS-----------------------------------------------------------------------------
 const UserManagerUI = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState({});
   const [users, setUsers] = useState([
     { username: "z124257", name: "Pepe", role: "admin" },
-    { username: "z123456", name: "Baran", role: "gerent" },
+    { username: "z123456", name: "Baran", role: "empleado" },
   ]);
 
   const col = [
@@ -29,11 +29,18 @@ const UserManagerUI = () => {
     setOpenModal(false);
   };
 
+  const handleClickEditGroup = (rowData) => {
+    setSelectedValue(rowData);
+    setUsers(true);
+  };
+
   return (
     <>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={2}>
+          
           <Button
+          //BOTON ABRE EL MODAL -----------------------------------------------------------------
             startIcon={<PersonAddRoundedIcon />}
             variant="contained"
             disableElevation
@@ -49,6 +56,7 @@ const UserManagerUI = () => {
         </Grid>
         <Grid item xs={12} sm={10}>
           <MaterialTable
+          //TABLA -------------------------------------------------------------------------------
             title="Users"
             columns={col}
             data={users}
@@ -71,7 +79,7 @@ const UserManagerUI = () => {
                 /* disabled: !fullAccess, */
                 tooltip: "Editar usuario",
                 onClick: (event, rowData) => {
-                  /*  handleClickEditGroup(rowData); */
+                handleClickEditGroup(rowData);
                 },
               },
               {

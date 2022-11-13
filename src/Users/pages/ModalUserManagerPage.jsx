@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React from 'react'
 import ModalUserManagerUI from '../components/ModalUserManagerUI'
 
@@ -41,12 +42,16 @@ const ModalUserManagerPage = (props) => {
     }
 
     return (
+        <>
         <ModalUserManagerUI
             selectedUser={selectedUser}
             handleDialogClose={handleDialogClose}
             handleSubmitForm={handleSubmit}
             createUser={createUser}
         />
+       
+        </>
+        
     )
 }
 

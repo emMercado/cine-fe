@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, Divider, makeStyles } from "@material-ui/core";
+import { Button, ButtonBase, Dialog, DialogTitle, Divider, makeStyles } from "@material-ui/core";
 import React from "react";
 import ModalUserManagerPage from "../pages/ModalUserManagerPage";
 
@@ -15,6 +15,7 @@ export const ModalUserUI = (props) => {
   const { open, onClose, selectedValue } = props;
 
   return (
+    /*dentro del modal -------------------------------------------------------------------------*/
     <Dialog
       onClose={onClose}
       open={open}
@@ -22,6 +23,7 @@ export const ModalUserUI = (props) => {
       maxWidth="sm"
       className={classes.dialogRoot}
     >
+     
       <DialogTitle>
         {selectedValue ? `Editar usuario` : `Crear usuario`}
       </DialogTitle>
