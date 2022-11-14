@@ -40,18 +40,31 @@ export const ModalScheduleFormUI = (props) => {
     moviesAvilable,
     roomAvilable,
   } = props;
+  //TODO: SACAR EL DATO HARDCODEADO Y COLOCAR EL VERDADERO VALOR OBJECTID
+  const handleSubmitForm = async (values) => {
+    console.log(values)
+    const body = {
+      movie: values.movie._id,
+      date: values.date,
+      room: '63557cd4de6f268bc77f9c31'/* values.room.number */,
+    };
+    if (!body) {
+      onClose();
+      return;
+    }
+    await handleCreateSchedule(body);
 
-  const handleSubmitForm = (body) => {
-    console.log(body);
+    populate();
+    onClose();
   };
 
   const {
     id = selectedValue ? selectedValue._id : undefined,
     movie = selectedValue ? selectedValue?.movie : "",
     date = selectedValue ? selectedValue?.date : "",
-    room = selectedValue ? selectedValue?.room : "",
+    room = selectedValue ? selectedValue?._id : "",
   } = selectedValue || {};
-  console.log(moviesAvilable)
+
   return (
     <Dialog
       onClose={onClose}

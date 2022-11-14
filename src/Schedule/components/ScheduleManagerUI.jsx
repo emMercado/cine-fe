@@ -24,9 +24,9 @@ const ScheduleManagerUI = (props) => {
   ]);
 
   const col = [
-    { title: "Pelicula", field: "movie" },
+    { title: "Pelicula", field: "movie.title" },
     { title: "Dia", field: "date" },
-    { title: "Sala", field: "room" },
+    { title: "Sala", field: "room.number" },
   ];
 
   const populateMovies = async () => {
@@ -38,10 +38,10 @@ const ScheduleManagerUI = (props) => {
     const { data } = await handleGetSchedules();
     setSchedulesAvilable(data);
   };
-
+  console.log(schedulesAvilable)
   useEffect(() => {
     populateMovies();
-    /* populateSchedules(); */
+    populateSchedules();
   }, []);
 
   const handleOpenModal = (rowData) => {
