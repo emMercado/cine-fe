@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
@@ -10,7 +10,6 @@ import { tableIcons } from "../../../Shared/components/tableIcons";
 export const MoviesTab = (props) => {
   const {
     tabSelected,
-    movies,
     handleOpenModal,
     handleModalClose,
     open,
@@ -23,12 +22,20 @@ export const MoviesTab = (props) => {
     handleDeleteMovie,
     moviesAvilable,
     setMoviesAvilable,
+    populate,
+    selectedValue,
   } = props;
   const col = [
     { title: "Title", field: "title" },
-    /* { title: "username", field: "username" },
-    { title: "Role", field: "role" }, */
+    { title: "Duracion min", field: `duration` },
   ];
+
+  const handleClickDeleteMovie = async (movieId) => {
+    await handleDeleteMovie(movieId);
+    populate();
+    return;
+  };
+
   return (
     <TabPanel value={tabSelected} index={0} id="user-info">
       <Button
@@ -64,16 +71,17 @@ export const MoviesTab = (props) => {
         actions={[
           {
             icon: Edit,
-            //disabled: !fullAccess,
             tooltip: "Edit movie",
             onClick: (event, rowData) => {
-              //  handleClickEditGroup(rowData);
+              handleOpenModal(rowData);
             },
           },
           {
             icon: Delete,
             tooltip: "Delete movie",
-            onClick: (event, rowData) => alert("Delete movie " + rowData.name),
+            onClick: (event, rowData) => {
+              handleClickDeleteMovie(rowData._id);
+            },
           },
         ]}
       />
@@ -83,10 +91,12 @@ export const MoviesTab = (props) => {
         handleModalClose={handleModalClose}
         genresAvilable={genresAvilable}
         protagonistsAvilable={protagonistsAvilable}
+        selectedValue={selectedValue}
         languagesAvilable={languagesAvilable}
         handleCreateMovie={handleCreateMovie}
         handleUpdateMovie={handleUpdateMovie}
         handleDeleteMovie={handleDeleteMovie}
+        populate={populate}
       />
     </TabPanel>
   );

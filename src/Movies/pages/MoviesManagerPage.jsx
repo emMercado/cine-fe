@@ -31,7 +31,7 @@ const MoviesManagerPage = () => {
     return data;
   };
 
-  const handleUpdateMovie = async (body, id) => {
+  const handleUpdateMovie = async (id, body) => {
     const data = await axios.put(`http://localhost:3001/api/movie/${id}`, body);
     return data;
   };
