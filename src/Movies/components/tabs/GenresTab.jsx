@@ -11,6 +11,17 @@ export const GenresTab = (props) => {
     /* { title: "username", field: "username" },
     { title: "Role", field: "role" }, */
   ];
+
+
+  const date = new Date();
+
+  console.log(date.toLocaleString());
+
+
+
+
+
+
   return (
     <TabPanel value={tabSelected} index={1} id="user-info">
       <MaterialTable

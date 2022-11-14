@@ -24,6 +24,7 @@ const Router = () => {
         const routes = [
             '/',
             '/user/manager',
+            '/ticket/manager',
             '/movie/manager',
             '/room/manager'
         ];

@@ -1,9 +1,19 @@
+import { Formik } from 'formik'
 import React from 'react'
 
 const Formulario = () => {
   return (
     <div>
-        <form>
+
+        <Formik
+            onSubmit={() => {
+                console.log('Formulario enviado');
+        }}       
+        
+        >            
+
+        {( {handleSubmit} )=> (
+            <form className="Formulario" onSubmit={handleSubmit} >
             <div>
                 <label htmlFor="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Name" />
@@ -18,6 +28,11 @@ const Formulario = () => {
             </div>
             <button type="submit">select seat</button>
         </form>
+        )}
+
+
+        </Formik>
+        
     </div>
   )
 }
