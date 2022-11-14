@@ -47,12 +47,12 @@ export const ModalMovieFormUI = (props) => {
     handleCreateMovie,
     handleUpdateMovie,
     handleDeleteMovie,
+    populate,
   } = props;
 
   const handleSubmitMovie = async (values) => {
     const genresId = values.genres.map((g) => g._id);
     const protagonistsId = values.protagonists.map((p) => p._id);
-    const languagesId = values.languages.map((l) => l._id);
 
     const body = {
       title: values.title,
@@ -62,33 +62,39 @@ export const ModalMovieFormUI = (props) => {
       producer: values.producer,
       date_premiere: values.date_premiere,
       duration: values.duration,
-      languages: languagesId,
+      language: values.language,
       img: values.img,
     };
 
     try {
-      const isCreated = await handleCreateMovie(body);
-      if (!isCreated) {
-        return;
+      if (!selectedValue) {
+        await handleCreateMovie(body);
       }
-      return isCreated;
+
+      if (selectedValue) {
+        await handleUpdateMovie(selectedValue._id, body);
+      }
+      populate();
+      onClose();
     } catch (error) {
       console.error(error);
     }
   };
 
   const {
-    id = undefined,
-    title = "",
-    genres = "",
-    direction = "",
-    protagonists = "",
-    producer = "",
-    date_premiere = "",
-    duration = "",
-    languages = "",
-    img = "",
-  } = selectedMovie || {};
+    id = selectedValue ? selectedValue._id : undefined,
+    title = selectedValue ? selectedValue?.title : "",
+    genres = selectedValue ? selectedValue?.genres : [],
+    direction = selectedValue ? selectedValue?.direction : "",
+    protagonists = selectedValue ? selectedValue?.protagonists : [],
+    producer = selectedValue ? selectedValue?.producer : "",
+    date_premiere = selectedValue
+      ? selectedValue?.date_premiere?.toString()
+      : "",
+    duration = selectedValue ? selectedValue.duration : "",
+    language = selectedValue ? selectedValue?.language : "",
+    img = selectedValue ? selectedValue.img : "",
+  } = selectedValue || {};
 
   return (
     <Dialog
@@ -113,7 +119,7 @@ export const ModalMovieFormUI = (props) => {
           producer,
           date_premiere,
           duration,
-          languages,
+          language,
           img,
         }}
         /* validate={handleValidations} */
@@ -147,6 +153,7 @@ export const ModalMovieFormUI = (props) => {
                         id="title"
                         label={"Titulo"}
                         formikProps={formikProps}
+                        value={formikProps.values.title}
                         placeholder="Titulo"
                         onChange={(e) => {
                           formikProps.handleChange(e);
@@ -160,13 +167,14 @@ export const ModalMovieFormUI = (props) => {
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
+                        formikProps={formikProps}
                         multiple
                         limitTags={1}
                         id="genres"
                         name="Generos"
                         options={genresAvilable}
                         disableCloseOnSelect
-                        values={formikProps.values.genres}
+                        value={formikProps?.values?.genres}
                         onChange={(_, values) => {
                           formikProps.setFieldValue("genres", values);
                         }}
@@ -200,11 +208,12 @@ export const ModalMovieFormUI = (props) => {
                     </FormControl>
                     <Grid item xs={12}>
                       <Input
+                        formikProps={formikProps}
                         className={classes.input}
                         required
                         id="direction"
                         label={"Direccion"}
-                        formikProps={formikProps}
+                        value={formikProps.values.direction}
                         placeholder="Direccion"
                         onChange={(e) => {
                           formikProps.handleChange(e);
@@ -218,13 +227,14 @@ export const ModalMovieFormUI = (props) => {
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
+                        formikProps={formikProps}
                         multiple
                         limitTags={1}
                         id="protagonists"
                         name="Protagonistas"
                         options={protagonistsAvilable}
                         disableCloseOnSelect
-                        values={formikProps.values.protagonists}
+                        value={formikProps?.values?.protagonists}
                         onChange={(_, values) => {
                           formikProps.setFieldValue("protagonists", values);
                         }}
@@ -259,11 +269,12 @@ export const ModalMovieFormUI = (props) => {
                     <Grid item xs={12}>
                       <Input
                         className={classes.input}
+                        formikProps={formikProps}
                         required
                         id="producer"
                         label={"Productor"}
                         placeholder="Productor"
-                        formikProps={formikProps}
+                        value={formikProps.values.producer}
                         onChange={(e) => {
                           formikProps.handleChange(e);
                           /* setDirty(true); */
@@ -277,9 +288,16 @@ export const ModalMovieFormUI = (props) => {
                         label="Fecha de estreno"
                         type="date"
                         formikProps={formikProps}
-                        defaultValue={formikProps.values.date_premiere}
-                        values={formikProps.values.date_premiere}
-                        className={classes.textField}
+                        value={
+                          formikProps?.values?.date_premiere?.toString() ||
+                          selectedValue?.date_premiere?.toString()
+                        }
+                        defaultValue={`${
+                          selectedValue
+                            ? selectedValue?.date_premiere?.toString()
+                            : formikProps?.values?.date_premiere?.toString()
+                        }`}
+                        /* className={classes.textField} */
                         onChange={(e) => {
                           formikProps.setFieldValue(
                             "date_premiere",
@@ -297,6 +315,7 @@ export const ModalMovieFormUI = (props) => {
                         required
                         id="duration"
                         label={"Duracion"}
+                        value={formikProps.values.duration}
                         formikProps={formikProps}
                         placeholder="90"
                         onChange={(e) => {
@@ -312,22 +331,23 @@ export const ModalMovieFormUI = (props) => {
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
-                        multiple
+                        formikProps={formikProps}
+                        /*  multiple */
                         limitTags={1}
                         id="language"
-                        name="Lenguajes"
+                        name="Idioma"
                         options={languagesAvilable}
                         disableCloseOnSelect
-                        values={formikProps.values.languages}
+                        value={formikProps?.values?.language}
                         onChange={(_, values) => {
-                          formikProps.setFieldValue("languages", values);
+                          formikProps.setFieldValue("language", values);
                         }}
                         getOptionSelected={(option, value) =>
                           option._id === value._id
                         }
                         getOptionLabel={(option) => option.name ?? ""}
-                        helperText={formikProps.errors.languages ?? ""}
-                        error={!!formikProps.errors.languages}
+                        helperText={formikProps.errors.language ?? ""}
+                        error={!!formikProps.errors.language}
                         renderOption={(option, { selected }) => (
                           <>
                             <Checkbox
@@ -344,8 +364,8 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             variant="outlined"
                             label={"Lenguajes"}
-                            helperText={formikProps.errors?.languages}
-                            error={!!formikProps.errors.languages}
+                            helperText={formikProps.errors?.language}
+                            error={!!formikProps.errors.language}
                           />
                         )}
                       />
