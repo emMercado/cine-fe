@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import axios from 'axios';
 import React from 'react'
 import ModalUserManagerUI from '../components/ModalUserManagerUI'
 
@@ -36,10 +37,11 @@ const ModalUserManagerPage = (props) => {
         return data
     }
 
-    const createUser = async (id, body) => {
-        const data = await fetch( 'localhost:3000/api/user/', id, body);
-        return data
-    }
+    const createUser = async (body) => {
+        const data = await axios.post(
+          `http://localhost:3001/api/user/registerUser`, body);
+        return data;
+      };
 
     return (
         <>

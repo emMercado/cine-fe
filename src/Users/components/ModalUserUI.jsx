@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ModalUserUI = (props) => {
   const classes = useStyles();
-  const { open, onClose, selectedValue } = props;
+  const { open, onClose, selectedValue, handleCreateUser } = props;
 
   return (
     /*dentro del modal -------------------------------------------------------------------------*/
@@ -31,6 +31,7 @@ export const ModalUserUI = (props) => {
       <ModalUserManagerPage
         selectedUser={selectedValue}
         handleDialogClose={onClose}
+        handleCreateUser={handleCreateUser}
       />
     </Dialog>
   );

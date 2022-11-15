@@ -15,9 +15,21 @@ import {
   Select,
 } from "@material-ui/core";
 import styles from "../styles/ModalUserManagerStyles";
-
+import UserManagerPage from "../pages/UserManagerPage";
 const ModalUserManagerUI = (props) => {
-  const { handleDialogClose, selectedUser, createUser } = props;
+
+  const {
+    onClose,
+    selectedValue,
+    selectedUser,
+    handleCreateUser,
+    handleUpdateUser,
+    handleDeleteUser,
+    handleDialogClose,
+    createUser,
+    
+  } = props;
+
   const classes = styles();
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
@@ -39,18 +51,40 @@ const ModalUserManagerUI = (props) => {
   const handleSubmitForm = async (values) => {
     //probar si se necesita async await
     console.log(values)
-    await createUser(values);
-    
-  }
+    //await handleCreateUser(values);
+
+    const body = {
+      username: "username",
+      name: "name",
+      email: "email",
+      password: "password",
+      confirmPassword: "confimgPasword",
+      //role: "admin",
+    }
+
+      try {
+        const isCreated = await createUser(body);
+        if (!isCreated) {
+          console.log('Se creo sastisfactoriamente')
+          return;
+        }
+        return isCreated;
+      } catch (error) {
+        console.error(error);
+      }
+  };
 
   const {
-    id = undefined,
+    //id = undefined,
     //username = selectedUser ? selectedUser.username : "",
     username = "",
     name = "",
+    password="",
+    confirmPassword="",
     email = "",
     role = "",
   } = selectedUser || {};
+  
   // CARTEL MODAL -----------------------------------------------------------------------------------
   const Data = ({ formikProps }) => (
     <Grid container spacing={3}>
@@ -127,22 +161,37 @@ const ModalUserManagerUI = (props) => {
       <Grid item xs={12}>
         {/*TODO: SELECT CON ROLES */}
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-controlled-open-select-label">Tipo de Rol</InputLabel>
-          <Select
-            labelId="demo-controlled-open-select-label"
-            id="demo-controlled-open-select"
+          <InputLabel 
+            id="role"
+            labelId="role"
             open={open}
             onClose={handleClose}
             onOpen={handleOpen}
             value={age}
-            onChange={handleChange}
+            formikProps={formikProps}
+            onChange={(e) => {
+            formikProps.handleChange(e)}}
+           
+            
+            //onChange={handleChange}
+            //formikProps={formikProps}
+            //onChange={(e) => {
+              //formikProps.handleChange(e);}}
+          >Tipo de Rol</InputLabel>
+          <Select
+            
+            
+            /* setDirty(true); */
+          
           >
+            
             {/*   <MenuItem value="">
               <em>None</em>
             </MenuItem>
             <MenuItem value={10}>Ten</MenuItem> */}
             <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
             <MenuItem value={"EMPLOYEE"}>EMPLEADO</MenuItem>
+            
           </Select>
         </FormControl>
         
@@ -224,7 +273,7 @@ const ModalUserManagerUI = (props) => {
               disableElevation
               variant="contained"
               color="primary"
-              onClick={()=> handleSubmitForm(formikProps.values) && handleDialogClose()}
+              onClick={()=> handleSubmitForm(formikProps.values) /*/&& handleDialogClose()*/}
               /* disabled={loadingSubmit || !dirty} */
               
             >

@@ -6,7 +6,11 @@ import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 //BOTONES Y MUESTRA DE USUARIOS-----------------------------------------------------------------------------
-const UserManagerUI = () => {
+const UserManagerUI = (props) => {
+  const {handleGetUsers,
+         handleCreateUser,
+         handleUpdateUser,
+         handleDeleteUser} = props
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState({});
   const [users, setUsers] = useState([
@@ -104,6 +108,7 @@ const UserManagerUI = () => {
         open={openModal}
         onClose={handleCloseModal}
         selectedValue={selectedValue}
+        handleCreateUser={handleCreateUser}
       />
     </>
   );

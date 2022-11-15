@@ -24,10 +24,7 @@ const MoviesManagerPage = () => {
   };
 
   const handleCreateMovie = async (body) => {
-    const data = await axios.post(
-      `http://localhost:3001/api/movie/registerMovie`,
-      body
-    );
+    const data = await axios.post(`http://localhost:3001/api/movie/registerMovie`, body);
     return data;
   };
 
