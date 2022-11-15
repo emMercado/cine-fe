@@ -12,6 +12,15 @@ const ScheduleManagerPage = () => {
     }
   };
 
+  const handleGetRooms = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:3001/api/room`);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleGetSchedules = async () => {
     try {
       const { data } = await axios.get(`http://localhost:3001/api/schedule`);
@@ -63,6 +72,7 @@ const ScheduleManagerPage = () => {
       handleCreateSchedule={handleCreateSchedule}
       handleUpdateSchedule={handleUpdateSchedule}
       handleDeleteSchedule={handleDeleteSchedule}
+      handleGetRooms={handleGetRooms}
     />
   );
 };

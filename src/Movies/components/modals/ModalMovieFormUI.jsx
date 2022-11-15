@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+import { DatePicker, KeyboardDatePicker } from "@material-ui/pickers";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { DropzoneArea } from "material-ui-dropzone";
@@ -40,20 +40,37 @@ export const ModalMovieFormUI = (props) => {
     open,
     onClose,
     selectedValue,
-    selectedMovie,
     genresAvilable,
     protagonistsAvilable,
     languagesAvilable,
     handleCreateMovie,
     handleUpdateMovie,
-    handleDeleteMovie,
     populate,
   } = props;
 
+  const handleFile = (e) => {
+    const array = [];
+    let value = e;
+    let reader = new FileReader();
+    reader.readAsDataURL(value[0]);
+
+    reader.onload = () => {
+      let fileInfo = {
+        name: value.name,
+        type: value.type,
+        size: Math.round(value.size / 1000) + " kB",
+        base64: reader.result,
+        file: value,
+      };
+      array.push(fileInfo);
+    };
+    console.log(array);
+  };
+
   const handleSubmitMovie = async (values) => {
+    const languagesId = values.languages.map((l) => l._id);
     const genresId = values.genres.map((g) => g._id);
     const protagonistsId = values.protagonists.map((p) => p._id);
-
     const body = {
       title: values.title,
       genres: genresId,
@@ -62,7 +79,7 @@ export const ModalMovieFormUI = (props) => {
       producer: values.producer,
       date_premiere: values.date_premiere,
       duration: values.duration,
-      language: values.language,
+      languages: languagesId,
       img: values.img,
     };
 
@@ -91,8 +108,8 @@ export const ModalMovieFormUI = (props) => {
     date_premiere = selectedValue
       ? selectedValue?.date_premiere?.toString()
       : "",
-    duration = selectedValue ? selectedValue.duration : "",
-    language = selectedValue ? selectedValue?.language : "",
+    duration = selectedValue ? selectedValue?.duration : "",
+    languages = selectedValue ? selectedValue.languages : [],
     img = selectedValue ? selectedValue.img : "",
   } = selectedValue || {};
 
@@ -119,7 +136,7 @@ export const ModalMovieFormUI = (props) => {
           producer,
           date_premiere,
           duration,
-          language,
+          languages,
           img,
         }}
         /* validate={handleValidations} */
@@ -136,7 +153,7 @@ export const ModalMovieFormUI = (props) => {
               >
                 <Grid
                   item
-                  xs={8}
+                  xs={12}
                   style={{
                     overflowWrap: "break-word",
                     paddingTop: 15,
@@ -161,7 +178,7 @@ export const ModalMovieFormUI = (props) => {
                       />
                     </Grid>
                     <FormControl
-                      variant="standard"
+                      letiant="standard"
                       //className={classes.formControl}
                     >
                       <Autocomplete
@@ -198,7 +215,7 @@ export const ModalMovieFormUI = (props) => {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            variant="outlined"
+                            letiant="outlined"
                             label={"Generos"}
                             /* helperText={formikProps.errors?.genres}
                             error={!!formikProps.errors.genres} */
@@ -221,7 +238,7 @@ export const ModalMovieFormUI = (props) => {
                       />
                     </Grid>
                     <FormControl
-                      variant="standard"
+                      letiant="standard"
                       //className={classes.formControl}
                     >
                       <Autocomplete
@@ -258,7 +275,7 @@ export const ModalMovieFormUI = (props) => {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            variant="outlined"
+                            letiant="outlined"
                             label={"Protagonistas"}
                             helperText={formikProps.errors?.protagonists}
                             error={!!formikProps.errors.protagonists}
@@ -287,17 +304,16 @@ export const ModalMovieFormUI = (props) => {
                         id="date_premiere"
                         label="Fecha de estreno"
                         type="date"
+                        defaultValue={selectedValue?.date_premiere?.replace(
+                          "T00:00:00.000Z",
+                          ""
+                        )}
                         formikProps={formikProps}
-                        value={
-                          formikProps?.values?.date_premiere?.toString() ||
-                          selectedValue?.date_premiere?.toString()
-                        }
-                        defaultValue={`${
-                          selectedValue
-                            ? selectedValue?.date_premiere?.toString()
-                            : formikProps?.values?.date_premiere?.toString()
-                        }`}
-                        /* className={classes.textField} */
+                        value={formikProps.values.date_premiere.replace(
+                          "T00:00:00.000Z",
+                          ""
+                        )}
+                        //className={classes.textField}
                         onChange={(e) => {
                           formikProps.setFieldValue(
                             "date_premiere",
@@ -325,29 +341,29 @@ export const ModalMovieFormUI = (props) => {
                       <Typography>min</Typography>
                     </Grid>
                     <FormControl
-                      variant="standard"
+                      letiant="standard"
                       //className={classes.formControl}
                     >
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
                         formikProps={formikProps}
-                        /*  multiple */
+                        multiple
                         limitTags={1}
-                        id="language"
+                        id="languages"
                         name="Idioma"
                         options={languagesAvilable}
                         disableCloseOnSelect
-                        value={formikProps?.values?.language}
+                        value={formikProps.values.languages}
                         onChange={(_, values) => {
-                          formikProps.setFieldValue("language", values);
+                          formikProps.setFieldValue("languages", values);
                         }}
                         getOptionSelected={(option, value) =>
                           option._id === value._id
                         }
                         getOptionLabel={(option) => option.name ?? ""}
-                        helperText={formikProps.errors.language ?? ""}
-                        error={!!formikProps.errors.language}
+                        helperText={formikProps.errors.languages ?? ""}
+                        error={!!formikProps.errors.languages}
                         renderOption={(option, { selected }) => (
                           <>
                             <Checkbox
@@ -362,7 +378,7 @@ export const ModalMovieFormUI = (props) => {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            variant="outlined"
+                            letiant="outlined"
                             label={"Lenguajes"}
                             helperText={formikProps.errors?.language}
                             error={!!formikProps.errors.language}
@@ -386,7 +402,7 @@ export const ModalMovieFormUI = (props) => {
                       }}
                     >
                       <Dropzone
-                        onDrop={(acceptedFiles) => console.log(acceptedFiles)}
+                        onDrop={(acceptedFiles) => handleFile(acceptedFiles)}
                       >
                         {({ getRootProps, getInputProps }) => (
                           <section>
@@ -409,7 +425,7 @@ export const ModalMovieFormUI = (props) => {
               <Button
                 className={classes.button}
                 disableElevation
-                variant="outlined"
+                letiant="outlined"
                 onClick={() => onClose()}
               >
                 Cerrar
@@ -418,12 +434,12 @@ export const ModalMovieFormUI = (props) => {
                 className={classes.button}
                 type="submit"
                 disableElevation
-                variant="contained"
+                letiant="contained"
                 color="primary"
                 onClick={() => handleSubmitMovie(formikProps.values)}
                 /* disabled={loadingSubmit || !dirty} */
               >
-                {selectedMovie ? `Guardar` : `Registrar usuario`}
+                {selectedValue ? `Guardar` : `Agregar pelicula`}
                 {/* {loadingSubmit && (
                   <CircularProgress
                     size={24}

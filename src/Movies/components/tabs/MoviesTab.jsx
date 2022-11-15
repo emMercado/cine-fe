@@ -21,13 +21,12 @@ export const MoviesTab = (props) => {
     handleUpdateMovie,
     handleDeleteMovie,
     moviesAvilable,
-    setMoviesAvilable,
     populate,
     selectedValue,
   } = props;
   const col = [
     { title: "Title", field: "title" },
-    { title: "Duracion min", field: `duration` },
+    //{ title: "Duracion min", field: `duration` },
   ];
 
   const handleClickDeleteMovie = async (movieId) => {
