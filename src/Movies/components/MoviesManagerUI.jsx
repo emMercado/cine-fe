@@ -121,6 +121,7 @@ const MoviesManagerUI = (props) => {
         <Grid item xs={12} sm={8}>
           <MoviesTab
             tabSelected={tabSelected}
+            selectedValue={selectedValue}
             handleOpenModal={handleOpenModal}
             open={openModal}
             onClose={handleCloseModal}
