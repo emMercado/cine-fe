@@ -50,6 +50,7 @@ export const ModalMovieFormUI = (props) => {
 
   const handleFile = (e) => {
     const array = [];
+    console.log(e[0]);
     let value = e;
     let reader = new FileReader();
     reader.readAsDataURL(value[0]);
@@ -109,7 +110,7 @@ export const ModalMovieFormUI = (props) => {
       ? selectedValue?.date_premiere?.toString()
       : "",
     duration = selectedValue ? selectedValue?.duration : "",
-    languages = selectedValue ? selectedValue.languages : [],
+    languages = selectedValue ? selectedValue?.languages : [],
     img = selectedValue ? selectedValue.img : "",
   } = selectedValue || {};
 
@@ -380,8 +381,8 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Lenguajes"}
-                            helperText={formikProps.errors?.language}
-                            error={!!formikProps.errors.language}
+                            helperText={formikProps.errors?.languages}
+                            error={!!formikProps.errors.languages}
                           />
                         )}
                       />
