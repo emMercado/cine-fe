@@ -38,15 +38,15 @@ export const ModalScheduleFormUI = (props) => {
     handleCreateSchedule,
     handleUpdateSchedule,
     moviesAvilable,
-    roomAvilable,
+    roomsAvilable,
   } = props;
   //TODO: SACAR EL DATO HARDCODEADO Y COLOCAR EL VERDADERO VALOR OBJECTID
   const handleSubmitForm = async (values) => {
-    console.log(values)
+    console.log(values);
     const body = {
       movie: values.movie._id,
       date: values.date,
-      room: '63557cd4de6f268bc77f9c31'/* values.room.number */,
+      room: values.room,
     };
     if (!body) {
       onClose();
@@ -160,7 +160,7 @@ export const ModalScheduleFormUI = (props) => {
                       <TextField
                         id="date"
                         label="Horario"
-                        type="date"
+                        type="datetime-local"
                         formikProps={formikProps}
                         value={
                           formikProps?.values?.date?.toString() ||
@@ -193,7 +193,7 @@ export const ModalScheduleFormUI = (props) => {
                         limitTags={1}
                         id="room"
                         name="sala"
-                        options={roomAvilable}
+                        options={roomsAvilable}
                         disableCloseOnSelect
                         value={formikProps?.values?.room}
                         onChange={(_, values) => {
@@ -202,7 +202,9 @@ export const ModalScheduleFormUI = (props) => {
                         getOptionSelected={(option, value) =>
                           option._id === value._id
                         }
-                        getOptionLabel={(option) => option.number ?? ""}
+                        getOptionLabel={(option) =>
+                          option?.number?.toString() ?? ""
+                        }
                         helperText={formikProps.errors.room ?? ""}
                         error={!!formikProps.errors.room}
                         renderOption={(option, { selected }) => (

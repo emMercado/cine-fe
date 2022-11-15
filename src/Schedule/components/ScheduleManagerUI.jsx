@@ -13,15 +13,13 @@ const ScheduleManagerUI = (props) => {
     handleCreateSchedule,
     handleUpdateSchedule,
     handleDeleteSchedule,
+    handleGetRooms,
   } = props;
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
   const [schedulesAvilable, setSchedulesAvilable] = useState([]);
   const [moviesAvilable, setMoviesAvilable] = useState([]);
-  const [roomAvilable, setRoomAvilable] = useState([
-    { _id: 1, number: "1" },
-    { _id: 2, number: "2" },
-  ]);
+  const [roomsAvilable, setRoomsAvilable] = useState([]);
 
   const col = [
     { title: "Pelicula", field: "movie.title" },
@@ -34,15 +32,26 @@ const ScheduleManagerUI = (props) => {
     setMoviesAvilable(data);
   };
 
+  const populateRooms = async () => {
+    const { data } = await handleGetRooms();
+    setRoomsAvilable(data);
+  };
+
   const populateSchedules = async () => {
     const { data } = await handleGetSchedules();
     setSchedulesAvilable(data);
   };
-  console.log(schedulesAvilable)
+
   useEffect(() => {
     populateMovies();
     populateSchedules();
+    populateRooms();
   }, []);
+
+  useEffect(() => {
+    populateMovies();
+    populateSchedules();
+  }, [handleDeleteSchedule]);
 
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
@@ -115,7 +124,7 @@ const ScheduleManagerUI = (props) => {
         handleCreateSchedule={handleCreateSchedule}
         handleUpdateSchedule={handleUpdateSchedule}
         moviesAvilable={moviesAvilable}
-        roomAvilable={roomAvilable}
+        roomsAvilable={roomsAvilable}
       />
     </>
   );
