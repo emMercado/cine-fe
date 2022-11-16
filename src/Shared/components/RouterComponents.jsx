@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 
 const HomePage = lazy(() => import('../../Home/pages/HomePage.jsx'));
-const TicketSales = lazy(() => import('../../Home/components/TicketSales.jsx'));
 const UserManagerPage = lazy(() => import('../../Users/pages/UserManagerPage.jsx'));
 const MoviesManagerPage = lazy(() => import('../../Movies/pages/MoviesManagerPage.jsx'));
 const RoomManagerPage = lazy(() => import('../../Rooms/pages/RoomManagerPage.jsx'));
@@ -13,8 +12,6 @@ const RouterComponents = (path) => {
     switch (path) {
         case '/':
             return HomePage;
-        case '/ticket/manager':
-            return TicketSales;
         case '/user/manager':
             return UserManagerPage;
         case '/movie/manager':
