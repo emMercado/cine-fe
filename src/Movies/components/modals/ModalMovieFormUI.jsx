@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Formik } from "formik";
 import {
   Button,
@@ -22,6 +22,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { DropzoneArea } from "material-ui-dropzone";
 import Dropzone from "react-dropzone";
 /* import { Typography } from "@material-ui/icons"; */
+import { ToastContext } from "../../../Shared/providers/ToastProvider";
 
 const useStyles = makeStyles((theme) => ({
   dialogRoot: {
@@ -47,6 +48,13 @@ export const ModalMovieFormUI = (props) => {
     handleUpdateMovie,
     populate,
   } = props;
+
+  /* const { showToast } = useContext(ToastContext); */
+
+  const toast = useContext(ToastContext);
+
+  console.log(toast)
+
 
   const handleFile = (e) => {
     const array = [];
@@ -87,10 +95,13 @@ export const ModalMovieFormUI = (props) => {
     try {
       if (!selectedValue) {
         await handleCreateMovie(body);
+        /* toast.showToast("success", "Gordo gei"); */
+        populate();
       }
 
       if (selectedValue) {
         await handleUpdateMovie(selectedValue._id, body);
+        populate();
       }
       populate();
       onClose();
