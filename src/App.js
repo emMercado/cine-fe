@@ -6,6 +6,7 @@ import { ThemeProvider } from "@material-ui/core";
 import Router from "./Shared/navigation/Router";
 import lightTheme from "./Shared/theme/LightTheme";
 /* import darkTheme from './Shared/theme/DarkTheme'; */
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (

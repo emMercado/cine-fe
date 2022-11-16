@@ -11,10 +11,9 @@ const ScheduleManagerUI = (props) => {
     handleGetSchedules,
     handleGetTickets,
     handleGetMovies,
-    handleCreateSchedule,
-    handleUpdateSchedule,
-    handleDeleteSchedule,
     handleGetRooms,
+    handleGetScheduleById,
+    handleCreateTicket,
   } = props;
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
@@ -46,7 +45,7 @@ const ScheduleManagerUI = (props) => {
 
   const populateTickets = async () => {
     const { data } = await handleGetTickets();
-    setSchedulesAvilable(data);
+    setTicketsAvilable(data);
   };
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const ScheduleManagerUI = (props) => {
     populateTickets();
   }, []);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     populateMovies();
     populateSchedules();
   }, [handleDeleteSchedule]); */
@@ -68,7 +67,7 @@ const ScheduleManagerUI = (props) => {
     setOpenModal(false);
   };
 
-/*   const handleClickDeleteSchedule = async (scheduleId) => {
+  /*   const handleClickDeleteSchedule = async (scheduleId) => {
     await handleDeleteSchedule(scheduleId);
   }; */
 
@@ -84,7 +83,7 @@ const ScheduleManagerUI = (props) => {
         }}
         onClick={() => handleOpenModal()}
       >
-        Nuevo horario
+        Venta
       </Button>
       <MaterialTable
         title={"Horarios"}
@@ -125,6 +124,9 @@ const ScheduleManagerUI = (props) => {
         open={openModal}
         onClose={handleCloseModal}
         selectedValue={selectedValue}
+        schedulesAvilable={schedulesAvilable}
+        handleGetScheduleById={handleGetScheduleById}
+        handleCreateTicket={handleCreateTicket}
         /* populate={populateSchedules} */
         /* handleCreateSchedule={handleCreateSchedule}
         handleUpdateSchedule={handleUpdateSchedule} */
