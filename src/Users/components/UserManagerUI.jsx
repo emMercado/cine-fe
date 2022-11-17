@@ -1,24 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
 import { Button, Grid } from "@material-ui/core";
-import { ModalUserUI } from "./ModalUserUI";
-import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
+import { tableIcons } from "../../Shared/components/tableIcons";
+import { ModalUserFormUI } from "./ModalUserFormUI";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
+import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
 
-const UserManagerUI = () => {
+const UserManagerUI = (props) => {
+  const {
+    handleGetUsers,
+    handleCreateUser,
+    handleUpdateUser,
+    handleDeleteUser,
+    handleGetRoles,
+  } = props;
   const [openModal, setOpenModal] = useState(false);
-  const [selectedValue, setSelectedValue] = useState({});
-  const [users, setUsers] = useState([
-    { username: "z124257", name: "Pepe", role: "admin" },
-    { username: "z123456", name: "Baran", role: "gerent" },
-  ]);
+  const [selectedValue, setSelectedValue] = useState();
+  const [usersAvilable, setUsersAvilable] = useState([]);
+  const [rolesAvilable, setrolesAvilable] = useState([]);
 
   const col = [
-    { title: "Name", field: "name" },
-    { title: "username", field: "username" },
-    { title: "Role", field: "role" },
+    { title: "Nombre", field: "name" },
+    { title: "Username", field: "username" },
+    { title: "Email", field: "email" },
+    { title: "Rol", field: "role.name" },
   ];
+
+  const populateUsers = async () => {
+    const { data } = await handleGetUsers();
+    setUsersAvilable(data);
+  };
+
+  const populateRoles = async () => {
+    const { data } = await handleGetRoles();
+    setrolesAvilable(data);
+  };
+
+  useEffect(() => {
+    populateUsers();
+    populateRoles();
+  }, []);
+
+  useEffect(() => {
+    populateUsers();
+    populateRoles();
+  }, [handleDeleteUser]);
 
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
@@ -29,29 +56,33 @@ const UserManagerUI = () => {
     setOpenModal(false);
   };
 
+  const handleClickDeleteUser = async (userId) => {
+    await handleDeleteUser(userId);
+    alert("se elimino usuario");
+  };
+
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={2}>
+      <Grid container xs={12} spacing={3}>
+        <Grid item xs={12}>
           <Button
             startIcon={<PersonAddRoundedIcon />}
             variant="contained"
             disableElevation
             style={{
-              marginRight: 10,
+              marginBottom: 20,
               backgroundColor: "#70a954",
               color: "#fff",
             }}
             onClick={() => handleOpenModal()}
           >
-            Nuevo usuario
+            Registrar Usuario
           </Button>
-        </Grid>
-        <Grid item xs={12} sm={10}>
           <MaterialTable
-            title="Users"
+            title={"Usuarios"}
+            icons={tableIcons}
             columns={col}
-            data={users}
+            data={usersAvilable}
             options={{
               actionsColumnIndex: -1,
               emptyRowsWhenPaging: false,
@@ -68,34 +99,31 @@ const UserManagerUI = () => {
             actions={[
               {
                 icon: Edit,
-                /* disabled: !fullAccess, */
-                tooltip: "Editar usuario",
+                tooltip: "Editar Usuario",
                 onClick: (event, rowData) => {
-                  /*  handleClickEditGroup(rowData); */
+                  handleOpenModal(rowData);
                 },
               },
               {
                 icon: Delete,
-                tooltip: "Eliminar usuario",
-                onClick: (event, rowData) =>
-                  alert("Eliminar usuario " + rowData.name),
+                tooltip: "Eliminar Usuario",
+                onClick: (event, rowData) => {
+                  handleClickDeleteUser(rowData._id);
+                },
               },
             ]}
-            /* editable={{
-                        onRowDelete: (oldData) =>
-                            new Promise(async (resolve) => {
-                                const user = await handleUserDelete(oldData.id);
-                                user && setData(data.filter((g) => g.id !== oldData.id));
-                                resolve();
-                            }),
-                    }} */
           />
         </Grid>
       </Grid>
-      <ModalUserUI
+
+      <ModalUserFormUI
         open={openModal}
         onClose={handleCloseModal}
         selectedValue={selectedValue}
+        rolesAvilable={rolesAvilable}
+        populate={populateUsers}
+        handleCreateUser={handleCreateUser}
+        handleUpdateUser={handleUpdateUser}
       />
     </>
   );

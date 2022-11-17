@@ -1,22 +1,59 @@
-import React from "react";
-import MaterialTable from "@material-table/core";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
+import React, { useRef } from "react";
+import MaterialTable, {
+  MTableAction,
+  MTableToolbar,
+} from "@material-table/core";
 import TabPanel from "../../../Shared/components/TabPanel";
+import { Button, Paper } from "@material-ui/core";
+import { tableIcons } from "../../../Shared/components/tableIcons";
 
 export const LanguagesTab = (props) => {
-  const { tabSelected, languages } = props;
-  const col = [
-    { title: "Title", field: "title" },
-    /* { title: "username", field: "username" },
-    { title: "Role", field: "role" }, */
-  ];
+  const {
+    tabSelected,
+    languagesAvilable,
+    setLanguagesAvilable,
+    populate,
+    handleCreateLanguage,
+    handleUpdateLanguage,
+    handleDeleteLanguage,
+  } = props;
+
+  const col = [{ title: "Idiomas", field: "name" }];
+
+  const handleSubmit = async (body) => {
+    try {
+      if (body._id) {
+        await handleUpdateLanguage(body, body._id);
+        populate();
+        return;
+      }
+      return await handleCreateLanguage(body);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addActionRef = useRef();
+
   return (
     <TabPanel value={tabSelected} index={3} id="user-info">
+      <Button
+        variant="contained"
+        disableElevation
+        style={{
+          marginBottom: 20,
+          backgroundColor: "#70a954",
+          color: "#fff",
+        }}
+        onClick={() => addActionRef.current.click()}
+      >
+        Nuevo Idioma
+      </Button>
       <MaterialTable
         title={"Languages"}
         columns={col}
-        data={languages}
+        data={languagesAvilable}
+        icons={tableIcons}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -25,26 +62,54 @@ export const LanguagesTab = (props) => {
           sorting: true,
           thirdSortClick: false,
           paginationType: "stepper",
-          pageSizeOptions: [10, 25, 50, 100, 250, 500],
+          pageSizeOptions: [10, 25],
           showTitle: true,
           search: true,
           showEmptyDataSourceMessage: false,
+          addRowPosition: "first",
+          actionColumnIndex: -1,
         }}
-        actions={[
-          {
-            icon: Edit,
-            //disabled: !fullAccess,
-            tooltip: "Edit language",
-            onClick: (event, rowData) => {
-              //  handleClickEditGroup(rowData);
-            },
+        editable={{
+          /* isEditable: (rowData) => rowData, */
+          onRowAdd: (newData) =>
+            new Promise((resolve) => {
+              resolve();
+              setLanguagesAvilable([...languagesAvilable, newData]);
+              handleSubmit(newData);
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve) => {
+              resolve();
+              handleSubmit(newData);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise(async (resolve) => {
+              const language = await handleDeleteLanguage(oldData._id);
+              if (language) {
+                populate();
+              }
+              resolve();
+            }),
+        }}
+        components={{
+          Container: (props) => (
+            <Paper {...props} variant="outlined" elevation={1} />
+          ),
+          Toolbar: (props) => (
+            <div style={{ height: "0px" }}>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+          Action: (props) => {
+            if (
+              typeof props.action === typeof Function ||
+              props.action.tooltip !== "Add"
+            ) {
+              return <MTableAction {...props} />;
+            }
+            return <div ref={addActionRef} onClick={props.action.onClick} />;
           },
-          {
-            icon: Delete,
-            tooltip: "Delete language",
-            onClick: (event, rowData) => alert("Delete language " + rowData.name),
-          },
-        ]}
+        }}
       />
     </TabPanel>
   );

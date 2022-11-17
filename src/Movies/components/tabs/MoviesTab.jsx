@@ -1,43 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import TabPanel from "../../../Shared/components/TabPanel";
 import { Button } from "@material-ui/core";
-import { ModalMovieManagerUI } from "../modals/ModalMovieManagerUI";
+import { ModalMovieFormUI } from "../modals/ModalMovieFormUI";
+import { tableIcons } from "../../../Shared/components/tableIcons";
 
 export const MoviesTab = (props) => {
   const {
     tabSelected,
-    movies,
     handleOpenModal,
     handleModalClose,
     open,
     onClose,
+    genresAvilable,
+    protagonistsAvilable,
+    languagesAvilable,
+    handleCreateMovie,
+    handleUpdateMovie,
+    handleDeleteMovie,
+    moviesAvilable,
+    populate,
+    selectedValue,
   } = props;
   const col = [
     { title: "Title", field: "title" },
-    /* { title: "username", field: "username" },
-    { title: "Role", field: "role" }, */
+    {
+      title: "Genero",
+      field: "genres[0].name",
+    },
+    { title: "Idioma", field: "languages[0].name" },
   ];
+
+  const handleClickDeleteMovie = async (movieId) => {
+    try {
+      const deleteMovie = await handleDeleteMovie(movieId);
+      if (!deleteMovie) {
+        return;
+      }
+      alert("Se elimino con exito");
+      populate();
+    } catch (error) {
+      alert(error);
+    } finally {
+      populate();
+    }
+  };
+
   return (
     <TabPanel value={tabSelected} index={0} id="user-info">
       <Button
         variant="contained"
         disableElevation
         style={{
-          marginRight: 10,
+          marginBottom: 20,
           backgroundColor: "#70a954",
           color: "#fff",
         }}
         onClick={() => handleOpenModal()}
       >
-        New Movie
+        Nueva Pelicula
       </Button>
       <MaterialTable
         title={"Movies"}
+        icons={tableIcons}
         columns={col}
-        data={movies}
+        data={moviesAvilable}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -54,23 +83,32 @@ export const MoviesTab = (props) => {
         actions={[
           {
             icon: Edit,
-            //disabled: !fullAccess,
             tooltip: "Edit movie",
             onClick: (event, rowData) => {
-              //  handleClickEditGroup(rowData);
+              handleOpenModal(rowData);
             },
           },
           {
             icon: Delete,
             tooltip: "Delete movie",
-            onClick: (event, rowData) => alert("Delete movie " + rowData.name),
+            onClick: (event, rowData) => {
+              handleClickDeleteMovie(rowData._id);
+            },
           },
         ]}
       />
-      <ModalMovieManagerUI
+      <ModalMovieFormUI
         open={open}
         onClose={onClose}
         handleModalClose={handleModalClose}
+        genresAvilable={genresAvilable}
+        protagonistsAvilable={protagonistsAvilable}
+        selectedValue={selectedValue}
+        languagesAvilable={languagesAvilable}
+        handleCreateMovie={handleCreateMovie}
+        handleUpdateMovie={handleUpdateMovie}
+        handleDeleteMovie={handleDeleteMovie}
+        populate={populate}
       />
     </TabPanel>
   );
