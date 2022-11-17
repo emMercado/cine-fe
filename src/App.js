@@ -9,6 +9,8 @@ import { Layout } from "./Shared/components/Layout";
 import { SinRuta } from "./Shared/SinRuta";
 import TicketManagerPage from "./Ticket/pages/TicketManagerPage";
 import UserManagerPage from "./Users/pages/UserManagerPage";
+import { ThemeProvider } from "@material-ui/core";
+import theme from "./Shared/theme/LightTheme"
 
 const App = () => {
   return (
