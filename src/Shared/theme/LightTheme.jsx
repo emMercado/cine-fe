@@ -1,16 +1,20 @@
 import { createTheme } from '@material-ui/core/styles';
+import { teal, deepPurple } from '@material-ui/core/colors';
+
+
 
 const lighTheme = createTheme({
   palette: {
+    type: 'dark',
     primary: {
-      dark: '#1a5785',
-      main: '#3d7fea', // Original: 267dbf   4a8390   #30336b 3c6382
-      light: '#5197cb',
+      light: deepPurple[500],
+      main: deepPurple[600],
+      dark: deepPurple[700],
     },
     secondary: {
-      light: '#ab003c',
-      main: '#f50057',
-      dark: '#f73378',
+      light: teal[500],
+      main: teal[700],
+      dark: teal[800],
     },
   },
 });
