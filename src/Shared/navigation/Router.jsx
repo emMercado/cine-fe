@@ -27,7 +27,7 @@ const Router = () => {
       "/room/manager",
       "/schedule/manager",
       "/ticket/manager",
-      "/login/manager",
+      "/auth/",
     ];
     const finalRoutes = [...new Set(routes)].map((route) => (
       <Route

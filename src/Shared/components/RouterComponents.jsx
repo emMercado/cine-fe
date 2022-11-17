@@ -6,9 +6,8 @@ const MoviesManagerPage = lazy(() => import('../../Movies/pages/MoviesManagerPag
 const RoomManagerPage = lazy(() => import('../../Rooms/pages/RoomManagerPage.jsx'));
 const ScheduleManagerPage = lazy(() => import('../../Schedule/pages/ScheduleManagerPage.jsx'));
 const TicketManagerPage = lazy(() => import('../../Ticket/pages/TicketManagerPage.jsx'));
-const LoginPage = lazy (() => import('../../Login/page/LoginPage.jsx'));
+const AuthPage = lazy(() => import('../../Auth/pages/AuthPage.jsx'));
 
-// TODO Ver si exite "reflection" para evitar tener que hacer el switch para levantar los componentes
 const RouterComponents = (path) => {
     switch (path) {
         case '/':
@@ -23,8 +22,8 @@ const RouterComponents = (path) => {
             return ScheduleManagerPage;
         case '/ticket/manager':
             return TicketManagerPage;
-        case '/login/manager':
-            return LoginPage;
+        case '/auth/':
+            return AuthPage;
         
         default:
             return <><h1>holamundo{console.log('not bad')}</h1></>

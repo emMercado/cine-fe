@@ -1,18 +1,28 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { teal, deepPurple } from '@material-ui/core/colors';
+import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
 
-const lighTheme = createTheme({
+
+
+const theme = createTheme({
   palette: {
+    type: 'dark',
     primary: {
-      dark: '#1a5785',
-      main: '#3d7fea', // Original: 267dbf   4a8390   #30336b 3c6382
-      light: '#5197cb',
+      light: deepPurple[500],
+      main: deepPurple[600],
+      dark: deepPurple[700],
     },
     secondary: {
-      light: '#ab003c',
-      main: '#f50057',
-      dark: '#f73378',
+      light: teal[500],
+      main: teal[700],
+      dark: teal[800],
     },
+    background: {
+      
+      paper: teal[800],
+      default: deepPurple[600],
+    }
   },
 });
 
-export default lighTheme;
+export default theme;

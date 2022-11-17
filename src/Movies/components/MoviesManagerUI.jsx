@@ -68,57 +68,59 @@ const MoviesManagerUI = (props) => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} /* sm={8} */ container>
-          <Tabs
-            variant="fullWidth"
-            value={tabSelected}
-            onChange={onChangeTabSelected}
-            /* TabIndicatorProps={{
-              style: {
-                display: "none",
-              },
-            }} */
-          >
-            <Tab
-              disableRipple
-              /* className={
-                parseInt(tabSelected) === 0
-                  ? classes.tabSelected
-                  : classes.tabNotSelected
-              } */
-              label={"PELICULAS"}
-            />
-            <Tab
-              disableRipple
-              /* className={
-                parseInt(tabSelected) === 1
-                  ? classes.tabSelected
-                  : classes.tabNotSelected
-              } */
-              label={"GENEROS"}
-            />
-            <Tab
-              disableRipple
-              /* className={
-                parseInt(tabSelected) === 2
-                  ? classes.tabSelected
-                  : classes.tabNotSelected
-              } */
-              label={"PROTAGONISTAS"}
-            />
-            <Tab
-              disableRipple
-              /* className={
-                parseInt(tabSelected) === 3
-                  ? classes.tabSelected
-                  : classes.tabNotSelected
-              } */
-              label={"LENGUAJES"}
-            />
-          </Tabs>
-        </Grid>
-        <Grid item xs={12} /* sm={8} */>
+        <Grid  xs={30} spacing={10} style={{padding: '30px'}}>
+            
+              <Grid item xs={12} /* sm={8} */ container>
+                <Tabs
+                  variant="fullWidth"
+                  value={tabSelected}
+                  onChange={onChangeTabSelected}
+                  /* TabIndicatorProps={{
+                    style: {
+                      display: "none",
+                    },
+                  }} */
+                >
+                  <Tab
+                    disableRipple
+                    /* className={
+                      parseInt(tabSelected) === 0
+                        ? classes.tabSelected
+                        : classes.tabNotSelected
+                    } */
+                    label={"PELICULAS"}
+                  />
+                  <Tab
+                    disableRipple
+                    /* className={
+                      parseInt(tabSelected) === 1
+                        ? classes.tabSelected
+                        : classes.tabNotSelected
+                    } */
+                    label={"GENEROS"}
+                  />
+                  <Tab
+                    disableRipple
+                    /* className={
+                      parseInt(tabSelected) === 2
+                        ? classes.tabSelected
+                        : classes.tabNotSelected
+                    } */
+                    label={"PROTAGONISTAS"}
+                  />
+                  <Tab
+                    disableRipple
+                    /* className={
+                      parseInt(tabSelected) === 3
+                        ? classes.tabSelected
+                        : classes.tabNotSelected
+                    } */
+                    label={"LENGUAJES"}
+                  />
+                </Tabs>
+              </Grid>
+              <Grid item xs={12} /* sm={8} */>
+          </Grid> 
           <MoviesTab
             tabSelected={tabSelected}
             selectedValue={selectedValue}
@@ -157,7 +159,7 @@ const MoviesManagerUI = (props) => {
             populate={populateLaguages}
           />
         </Grid>
-      </Grid>
+      
     </>
   );
 };
