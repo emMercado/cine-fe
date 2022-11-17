@@ -1,13 +1,12 @@
 import React from 'react'
-import HomeUI from '../components/HomeUI'
+import HomeUI from '../components/HomeUI.jsx'
 
 const HomePage = () => {
 
-    /* const getMovies = async () => {
-        return get('/api/movies')
-    } */
+   
 
     return (
+        
         <HomeUI /* getMovies={getMovies}  */ />
     )
 
