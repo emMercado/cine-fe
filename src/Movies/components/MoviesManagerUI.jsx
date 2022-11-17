@@ -157,7 +157,7 @@ const MoviesManagerUI = (props) => {
             populate={populateLaguages}
           />
         </Grid>
-      
+      </Grid>
     </>
   );
 };

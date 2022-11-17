@@ -72,7 +72,7 @@ const ScheduleManagerUI = (props) => {
 
   return (
     <>
-      <Grid xs={12} spacing={10} style={{padding: '30px'}}>
+      <Grid xs={12} spacing={10} style={{padding: '80px'}}>
           <Button
             variant="contained"
             disableElevation
@@ -132,7 +132,7 @@ const ScheduleManagerUI = (props) => {
         moviesAvilable={moviesAvilable}
         roomsAvilable={roomsAvilable}
       />
-    </div>
+    </>
   );
 };
 

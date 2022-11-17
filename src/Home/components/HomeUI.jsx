@@ -157,5 +157,4 @@ const HomeUI = (props) => {
     </>
   );
 };
-
 export default HomeUI;

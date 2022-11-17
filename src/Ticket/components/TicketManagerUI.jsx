@@ -64,7 +64,7 @@ const ScheduleManagerUI = (props) => {
   };
 
   return (
-    <div style={{ padding: "30 0 0 0" }}>
+    <div style={{ padding: "30 30 30 30", marginTop: "80px"  }}>
       <Grid xs={12} spacing={10}>
         <Grid item xs={12}>
           <Button
