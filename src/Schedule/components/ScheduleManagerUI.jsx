@@ -23,7 +23,7 @@ const ScheduleManagerUI = (props) => {
 
   const col = [
     { title: "Pelicula", field: "movie.title" },
-    { title: "Dia", field: "date" },
+    { title: "Horario", field: "date" },
     { title: "Sala", field: "room.number" },
   ];
 
@@ -48,11 +48,6 @@ const ScheduleManagerUI = (props) => {
     populateRooms();
   }, []);
 
-  useEffect(() => {
-    populateMovies();
-    populateSchedules();
-  }, [handleDeleteSchedule]);
-
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
     setOpenModal(true);
@@ -63,7 +58,16 @@ const ScheduleManagerUI = (props) => {
   };
 
   const handleClickDeleteSchedule = async (scheduleId) => {
-    await handleDeleteSchedule(scheduleId);
+    try {
+      const deleteSchedule = await handleDeleteSchedule(scheduleId);
+      if (!deleteSchedule) {
+        return;
+      }
+      alert("Se elimino con exito");
+      populateSchedules();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -72,7 +76,7 @@ const ScheduleManagerUI = (props) => {
         variant="contained"
         disableElevation
         style={{
-          marginRight: 10,
+          marginBottom: 20,
           backgroundColor: "#70a954",
           color: "#fff",
         }}
@@ -116,7 +120,6 @@ const ScheduleManagerUI = (props) => {
         ]}
       />
       <ModalScheduleFormUI
-        /* handleOpenModal={handleOpenModal} */
         open={openModal}
         onClose={handleCloseModal}
         selectedValue={selectedValue}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
@@ -26,13 +26,26 @@ export const MoviesTab = (props) => {
   } = props;
   const col = [
     { title: "Title", field: "title" },
-    //{ title: "Duracion min", field: `duration` },
+    {
+      title: "Genero",
+      field: "genres[0].name",
+    },
+    { title: "Idioma", field: "languages[0].name" },
   ];
 
   const handleClickDeleteMovie = async (movieId) => {
-    await handleDeleteMovie(movieId);
-    populate();
-    return;
+    try {
+      const deleteMovie = await handleDeleteMovie(movieId);
+      if (!deleteMovie) {
+        return;
+      }
+      alert("Se elimino con exito");
+      populate();
+    } catch (error) {
+      alert(error);
+    } finally {
+      populate();
+    }
   };
 
   return (
@@ -41,7 +54,7 @@ export const MoviesTab = (props) => {
         variant="contained"
         disableElevation
         style={{
-          marginRight: 10,
+          marginBottom: 20,
           backgroundColor: "#70a954",
           color: "#fff",
         }}

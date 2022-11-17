@@ -53,9 +53,6 @@ export const ModalMovieFormUI = (props) => {
 
   const toast = useContext(ToastContext);
 
-  console.log(toast)
-
-
   const handleFile = (e) => {
     const array = [];
     console.log(e[0]);
@@ -115,7 +112,7 @@ export const ModalMovieFormUI = (props) => {
     title = selectedValue ? selectedValue?.title : "",
     genres = selectedValue ? selectedValue?.genres : [],
     direction = selectedValue ? selectedValue?.direction : "",
-    protagonists = selectedValue ? selectedValue?.protagonists : [],
+    protagonists = selectedValue ? selectedValue.protagonists : [],
     producer = selectedValue ? selectedValue?.producer : "",
     date_premiere = selectedValue
       ? selectedValue?.date_premiere?.toString()
@@ -130,8 +127,8 @@ export const ModalMovieFormUI = (props) => {
       onClose={onClose}
       open={open}
       fullWidth
-      maxWidth="sm"
-      className={classes.dialogRoot}
+      /* maxWidth="sm" */
+      /* className={classes.dialogRoot} */
     >
       <DialogTitle>
         {selectedValue ? `Editar usuario` : `Crear usuario`}
@@ -165,19 +162,20 @@ export const ModalMovieFormUI = (props) => {
               >
                 <Grid
                   item
-                  xs={12}
+                  /* container */
+                  /*  xs={12} */
                   style={{
                     overflowWrap: "break-word",
                     paddingTop: 15,
-                    paddingBottom: 20,
-                    paddingLeft: 40,
-                    paddingRight: 25,
+                    paddingBottom: 50,
+                    paddingLeft: 100,
+                    paddingRight: 100,
                   }}
                 >
-                  <Grid container spacing={3}>
+                  <Grid container xs={12} spacing={3}>
                     <Grid item xs={12}>
                       <Input
-                        className={classes.input}
+                        //className={classes.input}
                         required
                         id="title"
                         label={"Titulo"}
@@ -189,10 +187,7 @@ export const ModalMovieFormUI = (props) => {
                         }}
                       />
                     </Grid>
-                    <FormControl
-                      letiant="standard"
-                      //className={classes.formControl}
-                    >
+                    <Grid item xs={12}>
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
@@ -229,12 +224,12 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Generos"}
-                            /* helperText={formikProps.errors?.genres}
-                            error={!!formikProps.errors.genres} */
+                            helperText={formikProps.errors?.genres}
+                            error={!!formikProps.errors.genres}
                           />
                         )}
                       />
-                    </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
                       <Input
                         formikProps={formikProps}
@@ -249,10 +244,7 @@ export const ModalMovieFormUI = (props) => {
                         }}
                       />
                     </Grid>
-                    <FormControl
-                      letiant="standard"
-                      //className={classes.formControl}
-                    >
+                    <Grid item xs={12}>
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
@@ -289,12 +281,12 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Protagonistas"}
-                            helperText={formikProps.errors?.protagonists}
-                            error={!!formikProps.errors.protagonists}
+                            /* helperText={formikProps.errors?.protagonists}
+                            error={!!formikProps.errors.protagonists} */
                           />
                         )}
                       />
-                    </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
                       <Input
                         className={classes.input}
@@ -352,10 +344,7 @@ export const ModalMovieFormUI = (props) => {
                       />
                       <Typography>min</Typography>
                     </Grid>
-                    <FormControl
-                      letiant="standard"
-                      //className={classes.formControl}
-                    >
+                    <Grid item xs={12}>
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
@@ -397,7 +386,7 @@ export const ModalMovieFormUI = (props) => {
                           />
                         )}
                       />
-                    </FormControl>
+                    </Grid>
                     <Grid
                       item
                       xs={12}
@@ -407,7 +396,7 @@ export const ModalMovieFormUI = (props) => {
                         alignItems: "center",
                         borderStyle: "dashed",
                         outline: "none",
-                        padding: 20,
+                        padding: 40,
                         borderColor: "#d8d8d8",
                         backgroundColor: "#fafafa",
                         color: "#606060",
@@ -452,12 +441,6 @@ export const ModalMovieFormUI = (props) => {
                 /* disabled={loadingSubmit || !dirty} */
               >
                 {selectedValue ? `Guardar` : `Agregar pelicula`}
-                {/* {loadingSubmit && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )} */}
               </Button>
             </DialogActions>
           </>

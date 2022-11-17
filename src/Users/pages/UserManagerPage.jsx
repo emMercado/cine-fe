@@ -3,11 +3,18 @@ import axios from "axios";
 import UserManagerUI from "../components/UserManagerUI";
 
 const UserManagerPage = () => {
-  
-
   const handleGetUsers = async () => {
     try {
       const { data } = await axios.get(`http://localhost:3001/api/user`);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleGetRoles = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:3001/api/role`);
       return data;
     } catch (error) {
       console.error(error);
@@ -40,9 +47,7 @@ const UserManagerPage = () => {
 
   const handleDeleteUser = async (id) => {
     try {
-      const data = await axios.delete(
-        `http://localhost:3001/api/user/${id}`
-      );
+      const data = await axios.delete(`http://localhost:3001/api/user/${id}`);
       return data;
     } catch (error) {
       console.error(error);
@@ -51,12 +56,11 @@ const UserManagerPage = () => {
 
   return (
     <UserManagerUI
-     
+      handleGetRoles={handleGetRoles}
       handleGetUsers={handleGetUsers}
       handleCreateUser={handleCreateUser}
       handleUpdateUser={handleUpdateUser}
       handleDeleteUser={handleDeleteUser}
-     
     />
   );
 };

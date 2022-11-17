@@ -10,33 +10,21 @@ const ScheduleManagerUI = (props) => {
   const {
     handleGetSchedules,
     handleGetTickets,
-    handleGetMovies,
-    handleGetRooms,
     handleGetScheduleById,
     handleCreateTicket,
+    handleDeleteTicket,
   } = props;
   const [openModal, setOpenModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
   const [schedulesAvilable, setSchedulesAvilable] = useState([]);
-  const [moviesAvilable, setMoviesAvilable] = useState([]);
-  const [roomsAvilable, setRoomsAvilable] = useState([]);
   const [ticketsAvilable, setTicketsAvilable] = useState([]);
 
   const col = [
-    { title: "Pelicula", field: "movie.title" },
-    { title: "Dia", field: "date" },
-    { title: "Sala", field: "room.number" },
+    { title: "Id", field: "_id" },
+    { title: "Horario", field: `schedule._id` },
+    { title: "Columna", field: `position.col` },
+    { title: "Fila", field: `position.row` },
   ];
-
-  const populateMovies = async () => {
-    const { data } = await handleGetMovies();
-    setMoviesAvilable(data);
-  };
-
-  const populateRooms = async () => {
-    const { data } = await handleGetRooms();
-    setRoomsAvilable(data);
-  };
 
   const populateSchedules = async () => {
     const { data } = await handleGetSchedules();
@@ -53,11 +41,6 @@ const ScheduleManagerUI = (props) => {
     populateTickets();
   }, []);
 
-  /*   useEffect(() => {
-    populateMovies();
-    populateSchedules();
-  }, [handleDeleteSchedule]); */
-
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
     setOpenModal(true);
@@ -67,9 +50,18 @@ const ScheduleManagerUI = (props) => {
     setOpenModal(false);
   };
 
-  /*   const handleClickDeleteSchedule = async (scheduleId) => {
-    await handleDeleteSchedule(scheduleId);
-  }; */
+  const handleClickDeleteTicket = async (ticketId) => {
+    try {
+      const deleteTicket = await handleDeleteTicket(ticketId);
+      if (!deleteTicket) {
+        return;
+      }
+    } catch (error) {
+      alert(error);
+    } finally {
+      populateTickets();
+    }
+  };
 
   return (
     <>
@@ -77,19 +69,19 @@ const ScheduleManagerUI = (props) => {
         variant="contained"
         disableElevation
         style={{
-          marginRight: 10,
+          marginBottom: 20,
           backgroundColor: "#70a954",
           color: "#fff",
         }}
         onClick={() => handleOpenModal()}
       >
-        Venta
+        Generar nuevo Boleto
       </Button>
       <MaterialTable
         title={"Horarios"}
         icons={tableIcons}
         columns={col}
-        data={schedulesAvilable}
+        data={ticketsAvilable}
         options={{
           actionsColumnIndex: -1,
           emptyRowsWhenPaging: false,
@@ -115,23 +107,21 @@ const ScheduleManagerUI = (props) => {
             icon: Delete,
             tooltip: "Delete schedule",
             onClick: (event, rowData) => {
-              //handleClickDeleteSchedule(rowData._id);
+              handleClickDeleteTicket(rowData._id);
             },
           },
         ]}
       />
       <ModalTicketFormUI
+        setOpenModal={setOpenModal}
         open={openModal}
         onClose={handleCloseModal}
+        populate={populateTickets}
         selectedValue={selectedValue}
         schedulesAvilable={schedulesAvilable}
+        setSchedulesAvilable={setSchedulesAvilable}
         handleGetScheduleById={handleGetScheduleById}
         handleCreateTicket={handleCreateTicket}
-        /* populate={populateSchedules} */
-        /* handleCreateSchedule={handleCreateSchedule}
-        handleUpdateSchedule={handleUpdateSchedule} */
-        /* moviesAvilable={moviesAvilable}
-        roomsAvilable={roomsAvilable} */
       />
     </>
   );
