@@ -87,7 +87,7 @@ const MoviesManagerUI = (props) => {
                   ? classes.tabSelected
                   : classes.tabNotSelected
               } */
-              label={"MOVIES"}
+              label={"PELICULAS"}
             />
             <Tab
               disableRipple
@@ -96,7 +96,7 @@ const MoviesManagerUI = (props) => {
                   ? classes.tabSelected
                   : classes.tabNotSelected
               } */
-              label={"GENRES"}
+              label={"GENEROS"}
             />
             <Tab
               disableRipple
@@ -105,7 +105,7 @@ const MoviesManagerUI = (props) => {
                   ? classes.tabSelected
                   : classes.tabNotSelected
               } */
-              label={"PROTAGONISTS"}
+              label={"PROTAGONISTAS"}
             />
             <Tab
               disableRipple
@@ -114,11 +114,11 @@ const MoviesManagerUI = (props) => {
                   ? classes.tabSelected
                   : classes.tabNotSelected
               } */
-              label={"LANGUAGES"}
+              label={"LENGUAJES"}
             />
           </Tabs>
         </Grid>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} /* sm={8} */>
           <MoviesTab
             tabSelected={tabSelected}
             selectedValue={selectedValue}

@@ -41,7 +41,7 @@ export const LanguagesTab = (props) => {
         variant="contained"
         disableElevation
         style={{
-          marginRight: 10,
+          marginBottom: 20,
           backgroundColor: "#70a954",
           color: "#fff",
         }}
