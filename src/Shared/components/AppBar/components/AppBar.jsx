@@ -44,6 +44,10 @@ const MyAppBar = (props) => {
             <Link to="/schedule/manager">Horarios</Link>
           </Button>
 
+          <Button color="primary" size="large" variant="outlined">
+            <Link to="/ticket/manager">Boleteria</Link>
+          </Button>
+
           <Button
             onClick={() => {
               logout(() => navigate("/"));

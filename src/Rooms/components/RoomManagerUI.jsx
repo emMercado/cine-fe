@@ -13,6 +13,7 @@ const RoomManagerUI = (props) => {
     handleUpdateRoom,
     handleDeleteRoom,
   } = props;
+
   const [roomsAvilable, setRoomsAvilable] = useState([]);
 
   const col = [{ title: "Salas", field: "number" }];
@@ -34,9 +35,10 @@ const RoomManagerUI = (props) => {
         return;
       }
       await handleCreateRoom(body);
-      populate();
     } catch (error) {
       console.error(error);
+    } finally {
+      populate();
     }
   };
 
@@ -52,7 +54,7 @@ const RoomManagerUI = (props) => {
   const addActionRef = useRef();
 
   return (
-    <>
+    <div style={{ marginTop: 100 }}>
       <Button
         variant="contained"
         disableElevation
@@ -123,7 +125,7 @@ const RoomManagerUI = (props) => {
           },
         }}
       />
-    </>
+    </div>
   );
 };
 

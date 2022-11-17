@@ -68,8 +68,8 @@ const MoviesManagerUI = (props) => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} /* sm={8} */ container>
+      <Grid container spacing={6} style={{ marginTop: 50 }}>
+        <Grid item xs={12}>
           <Tabs
             variant="fullWidth"
             value={tabSelected}

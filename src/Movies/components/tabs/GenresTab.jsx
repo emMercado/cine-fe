@@ -84,11 +84,18 @@ export const GenresTab = (props) => {
             }),
           onRowDelete: (oldData) =>
             new Promise(async (resolve) => {
-              const genre = await handleDeleteGenre(oldData._id);
-              if (genre) {
+              resolve();
+              try {
+                const genre = await handleDeleteGenre(oldData._id);
+                if (!genre) {
+                  return;
+                }
+                return genre;
+              } catch (error) {
+                alert(error);
+              } finally {
                 populate();
               }
-              resolve();
             }),
         }}
         components={{

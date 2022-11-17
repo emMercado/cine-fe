@@ -6,8 +6,6 @@ import { MoviesManagerPage } from "./Movies/pages/MoviesManagerPage";
 import { RoomManagerPage } from "./Rooms/pages/RoomManagerPage";
 import ScheduleManagerPage from "./Schedule/pages/ScheduleManagerPage";
 import { Layout } from "./Shared/components/Layout";
-import { RequiredAuth } from "./Shared/navigation/RequireAuth";
-import { PerfilPage } from "./Shared/PerfilPage";
 import { SinRuta } from "./Shared/SinRuta";
 import TicketManagerPage from "./Ticket/pages/TicketManagerPage";
 import UserManagerPage from "./Users/pages/UserManagerPage";
@@ -24,14 +22,6 @@ const App = () => {
           <Route path="/schedule/manager" element={<ScheduleManagerPage />} />
           <Route path="/user/manager" element={<UserManagerPage />} />
           <Route path="/ticket/manager" element={<TicketManagerPage />} />
-          <Route
-            path="/perfil"
-            element={
-              <RequiredAuth>
-                <PerfilPage />
-              </RequiredAuth>
-            }
-          />
           <Route path="/login" element={<AuthPage />} />
           <Route path="*" element={<SinRuta />} />
         </Route>

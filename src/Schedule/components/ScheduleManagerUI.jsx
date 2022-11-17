@@ -71,7 +71,7 @@ const ScheduleManagerUI = (props) => {
   };
 
   return (
-    <>
+    <div style={{ marginTop: 60 }}>
       <Button
         variant="contained"
         disableElevation
@@ -129,7 +129,7 @@ const ScheduleManagerUI = (props) => {
         moviesAvilable={moviesAvilable}
         roomsAvilable={roomsAvilable}
       />
-    </>
+    </div>
   );
 };
 

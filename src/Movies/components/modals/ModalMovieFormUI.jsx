@@ -93,17 +93,15 @@ export const ModalMovieFormUI = (props) => {
       if (!selectedValue) {
         await handleCreateMovie(body);
         //showToast("success", "Prueba");
-        populate();
       }
-
       if (selectedValue) {
         await handleUpdateMovie(selectedValue._id, body);
-        populate();
       }
-      populate();
-      onClose();
     } catch (error) {
       console.error(error);
+    } finally {
+      populate();
+      onClose();
     }
   };
 
