@@ -80,7 +80,6 @@ export const ModalTicketFormUI = (props) => {
   //     }
   //   })
   // };
-
   const handleClickSchedulePosition = (values, formikProps) => {
     formikProps.setFieldValue("schedule", values);
     setPositionsSchedules(values.positions);
@@ -91,6 +90,7 @@ export const ModalTicketFormUI = (props) => {
     position.busy = true;
     setPositionsSchedules(...position, !position.busy);
   };
+
 
   //TODO: SACAR EL DATO HARDCODEADO Y COLOCAR EL VERDADERO VALOR OBJECTID
   const handleSubmitForm = async (values) => {

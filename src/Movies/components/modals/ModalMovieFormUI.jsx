@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Formik } from "formik";
 import {
   Button,
@@ -22,6 +22,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { DropzoneArea } from "material-ui-dropzone";
 import Dropzone from "react-dropzone";
 /* import { Typography } from "@material-ui/icons"; */
+import { ToastContext } from "../../../Shared/providers/ToastProvider";
 
 const useStyles = makeStyles((theme) => ({
   dialogRoot: {
@@ -48,8 +49,16 @@ export const ModalMovieFormUI = (props) => {
     populate,
   } = props;
 
+  /* const { showToast } = useContext(ToastContext); */
+
+  const toast = useContext(ToastContext);
+
+  console.log(toast)
+
+
   const handleFile = (e) => {
     const array = [];
+    console.log(e[0]);
     let value = e;
     let reader = new FileReader();
     reader.readAsDataURL(value[0]);
@@ -86,10 +95,13 @@ export const ModalMovieFormUI = (props) => {
     try {
       if (!selectedValue) {
         await handleCreateMovie(body);
+        /* toast.showToast("success", "Gordo gei"); */
+        populate();
       }
 
       if (selectedValue) {
         await handleUpdateMovie(selectedValue._id, body);
+        populate();
       }
       populate();
       onClose();
@@ -109,7 +121,7 @@ export const ModalMovieFormUI = (props) => {
       ? selectedValue?.date_premiere?.toString()
       : "",
     duration = selectedValue ? selectedValue?.duration : "",
-    languages = selectedValue ? selectedValue.languages : [],
+    languages = selectedValue ? selectedValue?.languages : [],
     img = selectedValue ? selectedValue.img : "",
   } = selectedValue || {};
 
@@ -380,8 +392,8 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Lenguajes"}
-                            helperText={formikProps.errors?.language}
-                            error={!!formikProps.errors.language}
+                            helperText={formikProps.errors?.languages}
+                            error={!!formikProps.errors.languages}
                           />
                         )}
                       />
