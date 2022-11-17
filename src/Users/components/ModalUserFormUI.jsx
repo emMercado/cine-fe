@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Formik } from "formik";
 import {
   Button,
@@ -8,12 +8,10 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
   Grid,
   makeStyles,
   TextField,
   Input,
-  Modal,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
@@ -39,18 +37,10 @@ export const ModalUserFormUI = (props) => {
     populate,
     handleCreateUser,
     handleUpdateUser,
-  
+    rolesAvilable,
   } = props;
-  //TODO: SACAR EL DATO HARDCODEADO Y COLOCAR EL VERDADERO VALOR OBJECTID
-  const [age, setAge] = useState("");
-
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   const handleSubmitForm = async (values) => {
-    console.log(values);
     const body = {
       username: values.username,
       name: values.name,
@@ -64,23 +54,34 @@ export const ModalUserFormUI = (props) => {
       return;
     }
     await handleCreateUser(body);
-
     populate();
     onClose();
   };
 
-  const [payMethodAvilable, setPayMethodAvilable] = useState([
-    { _id: "637473577460d3e37a258719", role: "Admin" },
-    { _id: "637473577460d3e37a258720", role: "Empleado" },
-  ]);
-
+  const handleSubmitUpdateUser = async (values) => {
+    const body = {
+      username: values.username,
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      confirmPassword: values.confimgPasword,
+      role: values.role,
+    };
+    if (!body) {
+      onClose();
+      return;
+    }
+    await handleUpdateUser(values.id, body);
+    populate();
+    onClose();
+  };
 
   const {
-    
+    id = selectedValue ? selectedValue._id : undefined,
     username = selectedValue ? selectedValue.username : "",
     name = selectedValue ? selectedValue.name : "",
-    password=selectedValue ? selectedValue.password : "",
-    confirmPassword=selectedValue ? selectedValue.confirmPassword : "",
+    password = selectedValue ? selectedValue.password : "",
+    confirmPassword = selectedValue ? selectedValue.confirmPassword : "",
     email = selectedValue ? selectedValue.email : "",
     role = selectedValue ? selectedValue.role : "",
   } = selectedValue || {};
@@ -100,12 +101,13 @@ export const ModalUserFormUI = (props) => {
       <Formik
         enableReinitialize
         initialValues={{
+          id,
           username,
           name,
           email,
           password,
           confirmPassword,
-          role
+          role,
         }}
         /* validate={handleValidations} */
         /* onSubmit={handleSubmitForm} */
@@ -130,30 +132,30 @@ export const ModalUserFormUI = (props) => {
                     paddingRight: 25,
                   }}
                 >
-             
                   <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Input
+                        className={classes.input}
+                        required
+                        formikProps={formikProps}
+                        id="username"
+                        label={"Username"}
+                        placeholder="Nombre de usuario"
+                        value={formikProps.values.username}
+                        onChange={(e) => {
+                          formikProps.handleChange(e);
+                        }}
+                      />
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <Input
-                      className={classes.input}
-                      required
-                      id="username"
-                      label={"Username"}
-                      formikProps={formikProps}
-                      placeholder="Usuario"
-                      onChange={(e) => {
-                        formikProps.handleChange(e);
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
+                    <Grid item xs={12}>
                       <Input
                         className={classes.input}
                         required
                         id="name"
                         label={"Nombre completo"}
                         formikProps={formikProps}
+                        value={formikProps.values.name}
                         placeholder="Nombre Completo"
                         onChange={(e) => {
                           formikProps.handleChange(e);
@@ -168,6 +170,7 @@ export const ModalUserFormUI = (props) => {
                         required
                         id="email"
                         label={"Email"}
+                        value={formikProps.values.email}
                         formikProps={formikProps}
                         placeholder="Email"
                         onChange={(e) => {
@@ -175,14 +178,16 @@ export const ModalUserFormUI = (props) => {
                           /* setDirty(true); */
                         }}
                       />
-                    </Grid>  
+                    </Grid>
 
                     <Grid item xs={12}>
                       <Input
                         className={classes.input}
                         required
+                        disabled={formikProps.values.password ? true : false}
                         id="password"
                         label={"Contraseña"}
+                        value={formikProps.values.password ? "**********" : ""}
                         placeholder="Contraseña"
                         formikProps={formikProps}
                         onChange={(e) => {
@@ -192,7 +197,7 @@ export const ModalUserFormUI = (props) => {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Input
                         className={classes.input}
                         required
@@ -202,10 +207,10 @@ export const ModalUserFormUI = (props) => {
                         formikProps={formikProps}
                         onChange={(e) => {
                           formikProps.setFieldValue(e);
-                          /* setDirty(true); */
+                          //setDirty(true);
                         }}
                       />
-                    </Grid>
+                    </Grid> */}
 
                     <Grid item xs={12}>
                       <Autocomplete
@@ -215,7 +220,7 @@ export const ModalUserFormUI = (props) => {
                         limitTags={1}
                         id="role"
                         name="role"
-                        options={payMethodAvilable}
+                        options={rolesAvilable}
                         disableCloseOnSelect
                         value={formikProps.values.role}
                         onChange={(_, values) => {
@@ -224,7 +229,7 @@ export const ModalUserFormUI = (props) => {
                         getOptionSelected={(option, value) =>
                           option._id === value._id
                         }
-                        getOptionLabel={(option) => option.role ?? ""}
+                        getOptionLabel={(option) => option.name ?? ""}
                         helperText={formikProps.errors.role ?? ""}
                         error={!!formikProps.errors.role}
                         renderOption={(option, { selected }) => (
@@ -235,7 +240,7 @@ export const ModalUserFormUI = (props) => {
                               //className={classes.checkBoxMargin}
                               checked={selected}
                             />
-                            {option.role}
+                            {option.name}
                           </>
                         )}
                         renderInput={(params) => (
@@ -249,7 +254,6 @@ export const ModalUserFormUI = (props) => {
                         )}
                       />
                     </Grid>
-                    
                   </Grid>
                 </Grid>
               </form>
@@ -272,16 +276,13 @@ export const ModalUserFormUI = (props) => {
                 disableElevation
                 variant="contained"
                 color="primary"
-                onClick={() => handleSubmitForm(formikProps.values) /*&& onClose()*/}
-                /* disabled={loadingSubmit || !dirty} */
+                onClick={
+                  !selectedValue
+                    ? () => handleSubmitForm(formikProps.values)
+                    : () => handleSubmitUpdateUser(formikProps.values)
+                }
               >
                 {selectedValue ? `Guardar` : `Registrar usuario`}
-                {/* {loadingSubmit && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )} */}
               </Button>
             </DialogActions>
           </>
