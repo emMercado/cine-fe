@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import RoomManagerUI from "../components/RoomManagerUI";
 
-const RoomManagerPage = () => {
+export const RoomManagerPage = () => {
   const handleCreateRoom = async (body) => {
     const data = await axios.post(
       `http://localhost:3001/api/room/registerRoom`,
@@ -35,5 +35,3 @@ const RoomManagerPage = () => {
     />
   );
 };
-
-export default RoomManagerPage;

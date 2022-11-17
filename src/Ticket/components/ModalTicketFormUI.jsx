@@ -40,6 +40,7 @@ export const ModalTicketFormUI = (props) => {
     onClose,
     selectedValue,
     populate,
+    populates,
     schedulesAvilable,
     handleCreateTicket,
     setOpenModal,
@@ -53,7 +54,7 @@ export const ModalTicketFormUI = (props) => {
 
   const handleChangePosition = (event, values, formikProps) => {
     const string = event.target.value;
-    const position = { row: string[0], col: parseInt(string[1]) };
+    const position = { row: string[0].toString(), col: parseInt(string[1]) };
 
     const positionchange = positionsSchedules.map((pos) => {
       if (pos.row === position.row && pos.col === position.col && !pos.busy) {
@@ -103,22 +104,20 @@ export const ModalTicketFormUI = (props) => {
         return;
       }
       await handleCreateTicket(body);
-      populate();
-      
-      setOpenModal(false);
-      onClose();
-    
     } catch (error) {
       console.error(error);
     }
+    onClose();
+    populate();
+    populates();
   };
 
   const {
     id = selectedValue ? selectedValue._id : undefined,
-    schedule = selectedValue ? selectedValue.schedule : "",
-    position = selectedValue ? selectedValue?.position : "",
-    seller = selectedValue ? selectedValue?.seller : "",
-    pay_method = selectedValue ? selectedValue?.pay_method : "",
+    schedule = "",
+    position = "",
+    seller = "",
+    pay_method = "",
     price = selectedValue ? selectedValue?.price : "500",
   } = selectedValue || {};
 
