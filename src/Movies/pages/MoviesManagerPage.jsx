@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import MoviesManagerUI from "../components/MoviesManagerUI";
 
-const MoviesManagerPage = () => {
+export const MoviesManagerPage = () => {
   const handleGetMovies = async () => {
     const { data } = await axios.get(`http://localhost:3001/api/movie`);
     return data;
@@ -24,7 +24,10 @@ const MoviesManagerPage = () => {
   };
 
   const handleCreateMovie = async (body) => {
-    const data = await axios.post(`http://localhost:3001/api/movie/registerMovie`, body);
+    const data = await axios.post(
+      `http://localhost:3001/api/movie/registerMovie`,
+      body
+    );
     return data;
   };
 
@@ -50,5 +53,3 @@ const MoviesManagerPage = () => {
     />
   );
 };
-
-export default MoviesManagerPage;

@@ -1,4 +1,4 @@
-/* import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../providers/AuthProvider.jsx";
 
 export const AuthStatus = () => {
@@ -21,4 +21,4 @@ export const AuthStatus = () => {
       </button>
     </>
   );
-}; */
+};
