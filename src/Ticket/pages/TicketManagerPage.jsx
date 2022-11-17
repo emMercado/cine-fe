@@ -44,23 +44,9 @@ const TicketManagerPage = () => {
     }
   };
 
-  const handleUpdateSchedule = async (id, body) => {
+  const handleDeleteTicket = async (id) => {
     try {
-      const data = await axios.put(
-        `http://localhost:3001/api/schedule/${id}`,
-        body
-      );
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteSchedule = async (id) => {
-    try {
-      const data = await axios.delete(
-        `http://localhost:3001/api/schedule/${id}`
-      );
+      const data = await axios.delete(`http://localhost:3001/api/ticket/${id}`);
       return data;
     } catch (error) {
       console.error(error);
@@ -73,11 +59,7 @@ const TicketManagerPage = () => {
       handleGetTickets={handleGetTickets}
       handleGetScheduleById={handleGetScheduleById}
       handleCreateTicket={handleCreateTicket}
-      /* handleGetMovies={handleGetMovies}
-      handleCreateSchedule={handleCreateSchedule}
-      handleUpdateSchedule={handleUpdateSchedule}
-      handleDeleteSchedule={handleDeleteSchedule}
-      handleGetRooms={handleGetRooms} */
+      handleDeleteTicket={handleDeleteTicket}
     />
   );
 };
