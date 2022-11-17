@@ -112,7 +112,7 @@ export const ModalMovieFormUI = (props) => {
     title = selectedValue ? selectedValue?.title : "",
     genres = selectedValue ? selectedValue?.genres : [],
     direction = selectedValue ? selectedValue?.direction : "",
-    protagonists = selectedValue ? selectedValue?.protagonists : [],
+    protagonists = selectedValue ? selectedValue.protagonists : [],
     producer = selectedValue ? selectedValue?.producer : "",
     date_premiere = selectedValue
       ? selectedValue?.date_premiere?.toString()
@@ -224,12 +224,11 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Generos"}
-                            /* helperText={formikProps.errors?.genres}
-                            error={!!formikProps.errors.genres} */
+                            helperText={formikProps.errors?.genres}
+                            error={!!formikProps.errors.genres}
                           />
                         )}
                       />
-                      {/* </FormControl> */}
                     </Grid>
                     <Grid item xs={12}>
                       <Input
@@ -282,8 +281,8 @@ export const ModalMovieFormUI = (props) => {
                             {...params}
                             letiant="outlined"
                             label={"Protagonistas"}
-                            helperText={formikProps.errors?.protagonists}
-                            error={!!formikProps.errors.protagonists}
+                            /* helperText={formikProps.errors?.protagonists}
+                            error={!!formikProps.errors.protagonists} */
                           />
                         )}
                       />

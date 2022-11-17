@@ -40,9 +40,8 @@ export const ModalScheduleFormUI = (props) => {
     moviesAvilable,
     roomsAvilable,
   } = props;
-  //TODO: SACAR EL DATO HARDCODEADO Y COLOCAR EL VERDADERO VALOR OBJECTID
+
   const handleSubmitForm = async (values) => {
-    console.log(values);
     const body = {
       movie: values.movie._id,
       date: values.date,
@@ -58,10 +57,26 @@ export const ModalScheduleFormUI = (props) => {
     onClose();
   };
 
+  const handleSubmitUpdateForm = async (values) => {
+    const body = {
+      movie: values.movie._id,
+      date: values.date,
+      room: values.room,
+    };
+    if (!body) {
+      onClose();
+      return;
+    }
+    await handleUpdateSchedule(values.id, body);
+
+    populate();
+    onClose();
+  };
+
   const {
     id = selectedValue ? selectedValue._id : undefined,
     movie = selectedValue ? selectedValue?.movie : "",
-    date = selectedValue ? selectedValue?.date : "",
+    date = selectedValue ? selectedValue.date : "",
     room = selectedValue ? selectedValue?._id : "",
   } = selectedValue || {};
 
@@ -99,7 +114,7 @@ export const ModalScheduleFormUI = (props) => {
               >
                 <Grid
                   item
-                  xs={8}
+                  xs={12}
                   style={{
                     overflowWrap: "break-word",
                     paddingTop: 15,
@@ -108,16 +123,11 @@ export const ModalScheduleFormUI = (props) => {
                     paddingRight: 25,
                   }}
                 >
-                  <Grid container spacing={3}>
-                    <FormControl
-                      variant="standard"
-                      //className={classes.formControl}
-                    >
+                  <Grid container item xs={12} spacing={4}>
+                    <Grid item xs={12}>
                       <Autocomplete
                         //required
-                        //className={classes.autocomplete}
                         formikProps={formikProps}
-                        /*  multiple */
                         limitTags={1}
                         id="movie"
                         name="Pelicula"
@@ -154,24 +164,14 @@ export const ModalScheduleFormUI = (props) => {
                           />
                         )}
                       />
-                    </FormControl>
-
+                    </Grid>
                     <Grid item xs={12}>
                       <TextField
                         id="date"
                         label="Horario"
-                        type="datetime-local"
                         formikProps={formikProps}
-                        value={
-                          formikProps?.values?.date?.toString() ||
-                          selectedValue?.date?.toString()
-                        }
-                        defaultValue={`${
-                          selectedValue
-                            ? selectedValue?.date?.toString()
-                            : formikProps?.values?.date?.toString()
-                        }`}
-                        /* className={classes.textField} */
+                        type="datetime-local"
+                        value={formikProps.values.date.replace(":00.000Z", "")}
                         onChange={(e) => {
                           formikProps.setFieldValue("date", e.target.value);
                         }}
@@ -181,15 +181,11 @@ export const ModalScheduleFormUI = (props) => {
                       />
                     </Grid>
 
-                    <FormControl
-                      variant="standard"
-                      //className={classes.formControl}
-                    >
+                    <Grid item xs={12}>
                       <Autocomplete
                         //required
                         //className={classes.autocomplete}
                         formikProps={formikProps}
-                        /*  multiple */
                         limitTags={1}
                         id="room"
                         name="sala"
@@ -228,7 +224,7 @@ export const ModalScheduleFormUI = (props) => {
                           />
                         )}
                       />
-                    </FormControl>
+                    </Grid>
                   </Grid>
                 </Grid>
               </form>
@@ -251,16 +247,14 @@ export const ModalScheduleFormUI = (props) => {
                 disableElevation
                 variant="contained"
                 color="primary"
-                onClick={() => handleSubmitForm(formikProps.values)}
+                onClick={() =>
+                  selectedValue
+                    ? handleSubmitUpdateForm(formikProps.values)
+                    : handleSubmitForm(formikProps.values)
+                }
                 /* disabled={loadingSubmit || !dirty} */
               >
-                {selectedValue ? `Guardar` : `Registrar usuario`}
-                {/* {loadingSubmit && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )} */}
+                {selectedValue ? `Guardar` : `Agregar horario`}
               </Button>
             </DialogActions>
           </>
