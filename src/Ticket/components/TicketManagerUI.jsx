@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { tableIcons } from "../../Shared/components/tableIcons";
 import { ModalTicketFormUI } from "./ModalTicketFormUI";
 import Edit from "@material-ui/icons/Edit";
@@ -64,67 +64,72 @@ const ScheduleManagerUI = (props) => {
   };
 
   return (
-    <>
-      <Button
-        variant="contained"
-        disableElevation
-        style={{
-          marginBottom: 20,
-          backgroundColor: "#70a954",
-          color: "#fff",
-        }}
-        onClick={() => handleOpenModal()}
-      >
-        Generar nuevo Boleto
-      </Button>
-      <MaterialTable
-        title={"Horarios"}
-        icons={tableIcons}
-        columns={col}
-        data={ticketsAvilable}
-        options={{
-          actionsColumnIndex: -1,
-          emptyRowsWhenPaging: false,
-          headerStyle: { fontSize: 15 },
-          rowStyle: { fontSize: 15 },
-          sorting: true,
-          thirdSortClick: false,
-          paginationType: "stepper",
-          pageSizeOptions: [10, 25, 50, 100, 250, 500],
-          showTitle: true,
-          search: true,
-          showEmptyDataSourceMessage: false,
-        }}
-        actions={[
-          {
-            icon: Edit,
-            tooltip: "Edit schedule",
-            onClick: (event, rowData) => {
-              handleOpenModal(rowData);
-            },
-          },
-          {
-            icon: Delete,
-            tooltip: "Delete schedule",
-            onClick: (event, rowData) => {
-              handleClickDeleteTicket(rowData._id);
-            },
-          },
-        ]}
-      />
-      <ModalTicketFormUI
-        setOpenModal={setOpenModal}
-        open={openModal}
-        onClose={handleCloseModal}
-        populate={populateTickets}
-        populates={populateSchedules}
-        selectedValue={selectedValue}
-        schedulesAvilable={schedulesAvilable}
-        setSchedulesAvilable={setSchedulesAvilable}
-        handleGetScheduleById={handleGetScheduleById}
-        handleCreateTicket={handleCreateTicket}
-      />
-    </>
+    <div style={{padding: '30 0 0 0'}}>
+      <Grid  xs={12} spacing={10} >
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            disableElevation
+            style={{
+              marginBottom: 20,
+              backgroundColor: "#70a954",
+              color: "#fff",
+            }}
+            onClick={() => handleOpenModal()}
+          >
+            Generar nuevo Boleto
+          </Button>
+          <MaterialTable
+            title={"Horarios"}
+            icons={tableIcons}
+            columns={col}
+            data={ticketsAvilable}
+            options={{
+              actionsColumnIndex: -1,
+              emptyRowsWhenPaging: false,
+              headerStyle: { fontSize: 15 },
+              rowStyle: { fontSize: 15 },
+              sorting: true,
+              thirdSortClick: false,
+              paginationType: "stepper",
+              pageSizeOptions: [10, 25, 50, 100, 250, 500],
+              showTitle: true,
+              search: true,
+              showEmptyDataSourceMessage: false,
+            }}
+            actions={[
+              {
+                icon: Edit,
+                tooltip: "Edit schedule",
+                onClick: (event, rowData) => {
+                  handleOpenModal(rowData);
+                },
+              },
+              {
+                icon: Delete,
+                tooltip: "Delete schedule",
+                onClick: (event, rowData) => {
+                  handleClickDeleteTicket(rowData._id);
+                },
+              },
+            ]}
+            />
+          </Grid>
+        </Grid>
+        <ModalTicketFormUI
+          setOpenModal={setOpenModal}
+          open={openModal}
+          onClose={handleCloseModal}
+          populate={populateTickets}
+          populates={populateSchedules}
+          selectedValue={selectedValue}
+          schedulesAvilable={schedulesAvilable}
+          setSchedulesAvilable={setSchedulesAvilable}
+          handleGetScheduleById={handleGetScheduleById}
+          handleCreateTicket={handleCreateTicket}
+        />
+      
+    </div>
   );
 };
 

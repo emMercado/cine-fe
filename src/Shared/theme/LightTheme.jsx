@@ -1,9 +1,10 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { teal, deepPurple } from '@material-ui/core/colors';
+import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
 
 
 
-const lighTheme = createTheme({
+const theme = createTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -16,7 +17,12 @@ const lighTheme = createTheme({
       main: teal[700],
       dark: teal[800],
     },
+    background: {
+      
+      paper: teal[800],
+      default: deepPurple[600],
+    }
   },
 });
 
-export default lighTheme;
+export default theme;

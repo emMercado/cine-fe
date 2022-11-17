@@ -63,7 +63,7 @@ const UserManagerUI = (props) => {
 
   return (
     <>
-      <Grid container xs={12} spacing={3}>
+      <Grid container xs={12} spacing={10} style={{padding: '30px'}}>
         <Grid item xs={12}>
           <Button
             startIcon={<PersonAddRoundedIcon />}
