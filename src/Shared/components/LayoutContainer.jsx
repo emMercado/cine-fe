@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { AuthStatus } from "../navigation/AuthStatus";
 import AppBar from "./AppBar/components/AppBar";
 import MyDrawer from "./MyDrawer";
 
@@ -17,7 +16,6 @@ const LayoutContainer = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      {/* <AuthStatus /> */}
       <AppBar />
       <MyDrawer children={children} />
     </div>

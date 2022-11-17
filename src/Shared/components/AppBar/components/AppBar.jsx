@@ -1,9 +1,10 @@
 import React from "react";
-import { AppBar, Button, Toolbar, Typography, Grid } from "@material-ui/core";
+import { AppBar, Button, Toolbar, Grid, Typography } from "@material-ui/core";
 import styles from "../styles/AppBarStyles";
 import { Link } from "react-router-dom";
 
-const MyAppBar = () => {
+const MyAppBar = (props) => {
+  const { logout, navigate, sesion } = props;
   const classes = styles();
 
   return (
@@ -21,7 +22,7 @@ const MyAppBar = () => {
           container
           direction="row"
           justifyContent="center"
-          alingItems="Center"
+          //alingItems="Center"
         >
           <Button color="primary" size="large" variant="outlined">
             <Link to="/">Home</Link>
@@ -42,6 +43,20 @@ const MyAppBar = () => {
           <Button color="primary" size="large" variant="outlined">
             <Link to="/schedule/manager">Horarios</Link>
           </Button>
+
+          <Button
+            onClick={() => {
+              logout(() => navigate("/"));
+            }}
+            color="primary"
+            size="large"
+            variant="outlined"
+          >
+            Logout
+          </Button>
+          <Typography component="h1" variant="h5">
+            Bienvenido {sesion.username}
+          </Typography>
         </Grid>
       </Toolbar>
     </AppBar>

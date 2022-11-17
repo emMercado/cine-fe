@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import MyAppBar from "../components/AppBar/components/AppBar.jsx";
 import { useAuthContext } from "../providers/AuthProvider.jsx";
 
 export const AuthStatus = () => {
@@ -11,14 +12,7 @@ export const AuthStatus = () => {
 
   return (
     <>
-      <p>Conectado como {sesion.username}</p>
-      <button
-        onClick={() => {
-          logout(() => navigate("/"));
-        }}
-      >
-        Salir
-      </button>
+      <MyAppBar logout={logout} navigate={navigate} sesion={sesion} />
     </>
   );
 };

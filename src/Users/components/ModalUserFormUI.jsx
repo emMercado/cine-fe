@@ -184,10 +184,10 @@ export const ModalUserFormUI = (props) => {
                       <Input
                         className={classes.input}
                         required
-                        disabled={formikProps.values.password ? true : false}
+                        //disabled={formikProps.values.password ? true : false}
                         id="password"
                         label={"Contraseña"}
-                        value={formikProps.values.password ? "**********" : ""}
+                        value={formikProps.values.password/*  ? "**********" : "" */}
                         placeholder="Contraseña"
                         formikProps={formikProps}
                         onChange={(e) => {

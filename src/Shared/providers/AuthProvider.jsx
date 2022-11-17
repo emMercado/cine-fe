@@ -6,9 +6,9 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [sesion, setSesion] = useState();
 
-  const login = async (user, password, callback) => {
+  const login = async (username, password, callback) => {
     const response = await axios.post("http://localhost:3001/api/auth/login", {
-      user,
+      username,
       password,
     });
     if (response.data.token) {
