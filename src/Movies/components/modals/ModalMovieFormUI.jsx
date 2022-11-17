@@ -22,7 +22,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { DropzoneArea } from "material-ui-dropzone";
 import Dropzone from "react-dropzone";
 /* import { Typography } from "@material-ui/icons"; */
-import { ToastContext } from "../../../Shared/providers/ToastProvider";
+/* import { ToastContext } from "../../../Shared/providers/ToastProvider.jsx"; */
 
 const useStyles = makeStyles((theme) => ({
   dialogRoot: {
@@ -49,9 +49,9 @@ export const ModalMovieFormUI = (props) => {
     populate,
   } = props;
 
-  /* const { showToast } = useContext(ToastContext); */
+  /*  const { showToast } = useContext(ToastContext); */
 
-  const toast = useContext(ToastContext);
+  /* const toast = useContext(ToastContext); */
 
   const handleFile = (e) => {
     const array = [];
@@ -92,7 +92,7 @@ export const ModalMovieFormUI = (props) => {
     try {
       if (!selectedValue) {
         await handleCreateMovie(body);
-        /* toast.showToast("success", "Gordo gei"); */
+        //showToast("success", "Prueba");
         populate();
       }
 

@@ -117,6 +117,7 @@ const ScheduleManagerUI = (props) => {
         open={openModal}
         onClose={handleCloseModal}
         populate={populateTickets}
+        populates={populateSchedules}
         selectedValue={selectedValue}
         schedulesAvilable={schedulesAvilable}
         setSchedulesAvilable={setSchedulesAvilable}
