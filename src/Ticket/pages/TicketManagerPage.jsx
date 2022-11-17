@@ -3,27 +3,20 @@ import axios from "axios";
 import TicketManagerUI from "../components/TicketManagerUI";
 
 const TicketManagerPage = () => {
-  const handleGetMovies = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:3001/api/movie`);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleGetRooms = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:3001/api/room`);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleGetSchedules = async () => {
     try {
       const { data } = await axios.get(`http://localhost:3001/api/schedule`);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleGetScheduleById = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3001/api/schedule/${id}`
+      );
       return data;
     } catch (error) {
       console.error(error);
@@ -39,10 +32,10 @@ const TicketManagerPage = () => {
     }
   };
 
-  const handleCreateSchedule = async (body) => {
+  const handleCreateTicket = async (body) => {
     try {
       const data = await axios.post(
-        `http://localhost:3001/api/schedule/registerSchedule`,
+        `http://localhost:3001/api/ticket/registerTicket`,
         body
       );
       return data;
@@ -78,6 +71,8 @@ const TicketManagerPage = () => {
     <TicketManagerUI
       handleGetSchedules={handleGetSchedules}
       handleGetTickets={handleGetTickets}
+      handleGetScheduleById={handleGetScheduleById}
+      handleCreateTicket={handleCreateTicket}
       /* handleGetMovies={handleGetMovies}
       handleCreateSchedule={handleCreateSchedule}
       handleUpdateSchedule={handleUpdateSchedule}

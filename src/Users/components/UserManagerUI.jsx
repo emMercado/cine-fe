@@ -1,28 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "@material-table/core";
-import { Button, Grid, Icon } from "@material-ui/core";
-import { ModalUserUI } from "./ModalUserUI";
-import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
+import { Button, Grid } from "@material-ui/core";
+import { tableIcons } from "../../Shared/components/tableIcons";
+import { ModalUserFormUI } from "./ModalUserFormUI";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
-//BOTONES Y MUESTRA DE USUARIOS-----------------------------------------------------------------------------
+import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
+
 const UserManagerUI = (props) => {
-  const {handleGetUsers,
-         handleCreateUser,
-         handleUpdateUser,
-         handleDeleteUser} = props
+  const {
+    
+    handleGetUsers,
+    handleCreateUser,
+    handleUpdateUser,
+    handleDeleteUser,
+    
+  } = props;
   const [openModal, setOpenModal] = useState(false);
-  const [selectedValue, setSelectedValue] = useState({});
-  const [users, setUsers] = useState([
-    { username: "z124257", name: "Pepe", role: "admin" },
-    { username: "z123456", name: "Baran", role: "empleado" },
-  ]);
+  const [selectedValue, setSelectedValue] = useState();
+  const [usersAvilable, setUsersAvilable] = useState([]);
+  
+
+ /* const [users, setUsers] = useState([
+    { username: "ejemplo1234", name: "ejem", role: "admin" },
+    { username: "ejemplo12345", name: "ejem", role: "empleado" },
+  ]);*/
 
   const col = [
-    { title: "Name", field: "name" },
-    { title: "username", field: "username" },
-    { title: "Role", field: "role" },
+    { title: "Nombre", field: "name" }
   ];
+
+  const populateUsers = async () => {
+    
+    const { data } = await handleGetUsers();
+    console.log(data)
+    setUsersAvilable(data);
+  };
+
+  useEffect(() => {
+    
+    populateUsers();
+    
+  }, []);
+
+  
 
   const handleOpenModal = (rowData) => {
     setSelectedValue(rowData);
@@ -33,82 +54,78 @@ const UserManagerUI = (props) => {
     setOpenModal(false);
   };
 
-  const handleClickEditGroup = (rowData) => {
-    setSelectedValue(rowData);
-    setUsers(true);
+  const handleClickDeleteUser = async (userId) => {
+    await handleDeleteUser(userId);
   };
 
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={2}>
-          
-          <Button
-          //BOTON ABRE EL MODAL -----------------------------------------------------------------
-            startIcon={<PersonAddRoundedIcon />}
-            variant="contained"
-            disableElevation
-            style={{
-              marginRight: 10,
-              backgroundColor: "#70a954",
-              color: "#fff",
-            }}
-            onClick={() => handleOpenModal()}
-          >
-            Nuevo usuario
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={10}>
-          <MaterialTable
-          //TABLA -------------------------------------------------------------------------------
-            title="Users"
-            columns={col}
-            data={users}
-            options={{
-              actionsColumnIndex: -1,
-              emptyRowsWhenPaging: false,
-              headerStyle: { fontSize: 15 },
-              rowStyle: { fontSize: 15 },
-              sorting: true,
-              thirdSortClick: false,
-              paginationType: "stepper",
-              pageSizeOptions: [10, 25, 50, 100, 250, 500],
-              showTitle: true,
-              search: true,
-              showEmptyDataSourceMessage: false,
-            }}
-            actions={[
-              {
-                icon: Edit,
-                /* disabled: !fullAccess, */
-                tooltip: "Editar usuario",
-                onClick: (event, rowData) => {
-                handleClickEditGroup(rowData);
+         <Grid item xs={12} sm={2}>
+            <Button
+              startIcon={<PersonAddRoundedIcon />}
+              variant="contained"
+              disableElevation
+              style={{
+                marginRight: 10,
+                backgroundColor: "#70a954",
+                color: "#fff",
+              }}
+              onClick={() => handleOpenModal()}
+            >
+              Registrar Usuario
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={10}>
+            <MaterialTable
+              title={"Usuarios"}
+              icons={tableIcons}
+              columns={col}
+              data={usersAvilable}
+              options={{
+                actionsColumnIndex: -1,
+                emptyRowsWhenPaging: false,
+                headerStyle: { fontSize: 15 },
+                rowStyle: { fontSize: 15 },
+                sorting: true,
+                thirdSortClick: false,
+                paginationType: "stepper",
+                pageSizeOptions: [10, 25, 50, 100, 250, 500],
+                showTitle: true,
+                search: true,
+                showEmptyDataSourceMessage: false,
+              }}
+              actions={[
+                {
+                  icon: Edit,
+                  tooltip: "Editar Usuario",
+                  onClick: (event, rowData) => {
+                    handleOpenModal(rowData);
+                  },
                 },
-              },
-              {
-                icon: Delete,
-                tooltip: "Eliminar usuario",
-                onClick: (event, rowData) =>
-                  alert("Eliminar usuario " + rowData.name),
-              },
-            ]}
-            /* editable={{
-                        onRowDelete: (oldData) =>
-                            new Promise(async (resolve) => {
-                                const user = await handleUserDelete(oldData.id);
-                                user && setData(data.filter((g) => g.id !== oldData.id));
-                                resolve();
-                            }),
-                    }} */
-          />
-        </Grid>
-      </Grid>
-      <ModalUserUI
+                {
+                  icon: Delete,
+                  tooltip: "Eliminar Usuario",
+                  onClick: (event, rowData) => {
+                     handleClickDeleteUser(rowData._id);
+                  },
+                },
+              ]}
+              
+            />
+          </Grid>
+        
+      </Grid>    
+      
+      <ModalUserFormUI
+        /* handleOpenModal={handleOpenModal} */
         open={openModal}
         onClose={handleCloseModal}
         selectedValue={selectedValue}
+        populate={populateUsers}
         handleCreateUser={handleCreateUser}
+        handleUpdateUser={handleUpdateUser}
+       
       />
     </>
   );
